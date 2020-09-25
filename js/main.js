@@ -17,12 +17,18 @@ const COMMENTS = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
-const MIN_COMMENTS_AMOUNT = 0;
-const MAX_COMMENTS_AMOUNT = 6;
-const MIN_AVATAR_AMOUNT = 1;
-const MAX_AVATAR_AMOUNT = 6;
-const MIN_LIKES = 15;
-const MAX_LIKES = 200;
+const commentsAmount = {
+  MIN_COMMENTS_AMOUNT: 0,
+  MAX_COMMENTS_AMOUNT: 6,
+};
+const avatarsAmount = {
+  MIN_AVATAR_AMOUNT: 1,
+  MAX_AVATAR_AMOUNT: 6,
+};
+const likes = {
+  MIN_LIKES: 15,
+  MAX_LIKES: 200,
+};
 
 // Возвращает результат, включая максимум и минимум
 const getRandomIntInclusive = function (min, max) {
@@ -32,19 +38,17 @@ const getRandomIntInclusive = function (min, max) {
 };
 
 // Возвращает случайный элемент массива
-const getRandomArrayElement = function (array) {
-  return array[getRandomIntInclusive(0, array.length - 1)];
-};
+const getRandomArrayElement = (array) => array[getRandomIntInclusive(0, array.length - 1)];
 
 // Создает массив комментариев
 const createComments = function (commentsArray) {
   const comments = [];
   for (let i = 0; i < commentsArray.length; i++) {
-    comments[i] = {
-      avatar: 'img/avatar-' + getRandomIntInclusive(MIN_AVATAR_AMOUNT, MAX_AVATAR_AMOUNT) + '.svg',
+    comments.push({
+      avatar: 'img/avatar-' + getRandomIntInclusive(avatarsAmount) + '.svg',
       message: getRandomArrayElement(COMMENTS),
       name: getRandomArrayElement(USER_NAMES)
-    };
+    });
   }
   return comments;
 };
@@ -53,12 +57,12 @@ const createComments = function (commentsArray) {
 const createPhotoDescription = function (descriptionsArray) {
   const photoDescriptions = [];
   for (let i = 0; i < descriptionsArray; i++) {
-    photoDescriptions[i] = {
+    photoDescriptions.push({
       url: 'photos/' + (i + 1) + '.jpg',
       description: 'описание фотографии',
-      likes: getRandomIntInclusive(MIN_LIKES, MAX_LIKES),
-      comments: createComments(getRandomIntInclusive(MIN_COMMENTS_AMOUNT, MAX_COMMENTS_AMOUNT))
-    };
+      likes: getRandomIntInclusive(likes),
+      comments: createComments(getRandomIntInclusive(commentsAmount))
+    });
   }
   return photoDescriptions;
 };
@@ -70,13 +74,13 @@ const picturesTemplate = document.querySelector(`#picture`).content.querySelecto
 const createPicture = function (picture) {
   const pictureElement = picturesTemplate.cloneNode(true);
   pictureElement.querySelector('.picture__img').src = picture.url;
-  pictureElement.querySelector('.picture__comments').textContent = picture.comments;
+  pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
   pictureElement.querySelector('.picture__likes').textContent = picture.likes;
 
   return pictureElement;
 };
 
-// Cоздаем и заполняет DOM-элементы
+// Cоздает и заполняет DOM-элементы
 const createPicturesList = function (pictures) {
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < pictures.length; i++) {
