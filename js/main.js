@@ -25,13 +25,15 @@ const avatarsAmount = {
   MIN_AVATAR_AMOUNT: 1,
   MAX_AVATAR_AMOUNT: 6,
 };
-const likes = {
+const likesAmount = {
   MIN_LIKES: 15,
   MAX_LIKES: 200,
 };
+// const MIN_LIKES = 15;
+// const MAX_LIKES = 200;
 
 // Возвращает результат, включая максимум и минимум
-const getRandomIntInclusive = function (min, max) {
+const getRandomIntInclusive = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -41,7 +43,7 @@ const getRandomIntInclusive = function (min, max) {
 const getRandomArrayElement = (array) => array[getRandomIntInclusive(0, array.length - 1)];
 
 // Создает массив комментариев
-const createComments = function (commentsArray) {
+const createComments = (commentsArray) => {
   const comments = [];
   for (let i = 0; i < commentsArray.length; i++) {
     comments.push({
@@ -54,13 +56,13 @@ const createComments = function (commentsArray) {
 };
 
 // Создает массив описаний фото
-const createPhotoDescription = function (descriptionsArray) {
+const createPhotoDescription = (descriptionsArray) => {
   const photoDescriptions = [];
   for (let i = 0; i < descriptionsArray; i++) {
     photoDescriptions.push({
       url: 'photos/' + (i + 1) + '.jpg',
       description: 'описание фотографии',
-      likes: getRandomIntInclusive(likes),
+      likes: getRandomIntInclusive(likesAmount),
       comments: createComments(getRandomIntInclusive(commentsAmount))
     });
   }
@@ -71,17 +73,16 @@ const picturesItem = document.querySelector('.pictures');
 const picturesTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
 
 // Копирует шаблон и добавляет в него данные
-const createPicture = function (picture) {
+const createPicture = (picture) => {
   const pictureElement = picturesTemplate.cloneNode(true);
   pictureElement.querySelector('.picture__img').src = picture.url;
   pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
   pictureElement.querySelector('.picture__likes').textContent = picture.likes;
-
   return pictureElement;
 };
 
 // Cоздает и заполняет DOM-элементы
-const createPicturesList = function (pictures) {
+const createPicturesList = (pictures) => {
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < pictures.length; i++) {
     fragment.appendChild(createPicture(pictures[i]));
