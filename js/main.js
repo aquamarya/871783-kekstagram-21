@@ -61,7 +61,7 @@ const createPhotoDescription = (descriptionsArray) => {
       url: 'photos/' + (i + 1) + '.jpg',
       description: 'описание фотографии',
       likes: getRandomIntInclusive(likesAmount.MIN_LIKES, likesAmount.MAX_LIKES),
-      comments: createComments(getRandomIntInclusive(commentsAmount))
+      comments: createComments(getRandomIntInclusive(commentsAmount.MIN_COMMENTS_AMOUNT, commentsAmount.MAX_COMMENTS_AMOUNT))
     });
   }
   return photoDescriptions;
