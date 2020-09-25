@@ -29,8 +29,6 @@ const likesAmount = {
   MIN_LIKES: 15,
   MAX_LIKES: 200,
 };
-// const MIN_LIKES = 15;
-// const MAX_LIKES = 200;
 
 // Возвращает результат, включая максимум и минимум
 const getRandomIntInclusive = (min, max) => {
@@ -62,7 +60,7 @@ const createPhotoDescription = (descriptionsArray) => {
     photoDescriptions.push({
       url: 'photos/' + (i + 1) + '.jpg',
       description: 'описание фотографии',
-      likes: getRandomIntInclusive(likesAmount),
+      likes: getRandomIntInclusive(likesAmount.MIN_LIKES, likesAmount.MAX_LIKES),
       comments: createComments(getRandomIntInclusive(commentsAmount))
     });
   }
