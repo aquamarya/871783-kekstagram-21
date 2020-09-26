@@ -41,11 +41,11 @@ const getRandomIntInclusive = (min, max) => {
 const getRandomArrayElement = (array) => array[getRandomIntInclusive(0, array.length - 1)];
 
 // Создает список комментариев
-const createComments = (commentsList) => {
+const createComments = (commentsAmount) => {
   const comments = [];
-  for (let i = 0; i < commentsList; i++) {
+  for (let i = 0; i < commentsAmount; i++) {
     comments.push({
-      avatar: 'img/avatar-' + getRandomIntInclusive(AvatarsAmount) + '.svg',
+      avatar: `img/avatar-${getRandomIntInclusive(AvatarsAmount.MIN, AvatarsAmount.MAX)}.svg`,
       message: getRandomArrayElement(COMMENTS),
       name: getRandomArrayElement(USER_NAMES)
     });
@@ -58,7 +58,7 @@ const createPhotoDescription = (descriptions) => {
   const photoDescriptions = [];
   for (let i = 0; i < descriptions; i++) {
     photoDescriptions.push({
-      url: 'photos/' + (i + 1) + '.jpg',
+      url: `photos/${(i + 1)}.jpg`,
       description: 'описание фотографии',
       likes: getRandomIntInclusive(LikesAmount.MIN, LikesAmount.MAX),
       comments: createComments(getRandomIntInclusive(CommentsAmount.MIN, CommentsAmount.MAX))
@@ -68,7 +68,7 @@ const createPhotoDescription = (descriptions) => {
 };
 
 const picturesItem = document.querySelector('.pictures');
-const picturesTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
+const picturesTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 // Копирует шаблон и добавляет в него данные
 const createPicture = (picture) => {
