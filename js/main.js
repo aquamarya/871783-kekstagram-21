@@ -17,17 +17,17 @@ const COMMENTS = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
-const commentsAmount = {
-  MIN_COMMENTS_AMOUNT: 0,
-  MAX_COMMENTS_AMOUNT: 6,
+const CommentsAmount = {
+  MIN: 0,
+  MAX: 6,
 };
-const avatarsAmount = {
-  MIN_AVATAR_AMOUNT: 1,
-  MAX_AVATAR_AMOUNT: 6,
+const AvatarsAmount = {
+  MIN: 1,
+  MAX: 6,
 };
-const likesAmount = {
-  MIN_LIKES: 15,
-  MAX_LIKES: 200,
+const LikesAmount = {
+  MIN: 15,
+  MAX: 200,
 };
 
 // Возвращает результат, включая максимум и минимум
@@ -40,12 +40,12 @@ const getRandomIntInclusive = (min, max) => {
 // Возвращает случайный элемент массива
 const getRandomArrayElement = (array) => array[getRandomIntInclusive(0, array.length - 1)];
 
-// Создает массив комментариев
-const createComments = (commentsArray) => {
+// Создает список комментариев
+const createComments = (commentsList) => {
   const comments = [];
-  for (let i = 0; i < commentsArray.length; i++) {
+  for (let i = 0; i < commentsList; i++) {
     comments.push({
-      avatar: 'img/avatar-' + getRandomIntInclusive(avatarsAmount) + '.svg',
+      avatar: 'img/avatar-' + getRandomIntInclusive(AvatarsAmount) + '.svg',
       message: getRandomArrayElement(COMMENTS),
       name: getRandomArrayElement(USER_NAMES)
     });
@@ -53,15 +53,15 @@ const createComments = (commentsArray) => {
   return comments;
 };
 
-// Создает массив описаний фото
-const createPhotoDescription = (descriptionsArray) => {
+// Создает описание фото
+const createPhotoDescription = (descriptions) => {
   const photoDescriptions = [];
-  for (let i = 0; i < descriptionsArray; i++) {
+  for (let i = 0; i < descriptions; i++) {
     photoDescriptions.push({
       url: 'photos/' + (i + 1) + '.jpg',
       description: 'описание фотографии',
-      likes: getRandomIntInclusive(likesAmount.MIN_LIKES, likesAmount.MAX_LIKES),
-      comments: createComments(getRandomIntInclusive(commentsAmount.MIN_COMMENTS_AMOUNT, commentsAmount.MAX_COMMENTS_AMOUNT))
+      likes: getRandomIntInclusive(LikesAmount.MIN, LikesAmount.MAX),
+      comments: createComments(getRandomIntInclusive(CommentsAmount.MIN, CommentsAmount.MAX))
     });
   }
   return photoDescriptions;
