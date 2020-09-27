@@ -79,7 +79,7 @@ const createPicture = (picture) => {
   return pictureElement;
 };
 
-// Cоздает и заполняет DOM-элементы
+// Создает и заполняет DOM-элементы
 const createPicturesList = (pictures) => {
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < pictures.length; i++) {
@@ -89,4 +89,51 @@ const createPicturesList = (pictures) => {
 };
 
 // Отображает фото пользователей
-createPicturesList((createPhotoDescription(PICTURES_AMOUNT)));
+const pictures = createPhotoDescription(PICTURES_AMOUNT);
+createPicturesList(pictures);
+
+const commentsAmount = document.querySelector('.social__comments');
+const commentsItem = commentsAmount.querySelector('.social__comment');
+const bigPictureItem = document.querySelector('.big-picture');
+
+// Создает один комментарий
+const createCommentItem = (data) => {
+  const commentElement = commentsItem.cloneNode(true);
+
+  commentElement.querySelector('.social__picture').src = data.avatar;
+  commentElement.querySelector('.social__picture').alt = data.name;
+  commentElement.querySelector('.social__text').textContent = data.message;
+
+  return commentElement;
+};
+
+// Cоздает и заполняет DOM-элементы
+const createCommentsAmount = (data) => {
+  commentsAmount.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < data.length; i++) {
+    fragment.appendChild(createCommentItem(data[i]));
+  }
+  commentsAmount.appendChild(fragment);
+};
+
+// Отрисовывает большое фото
+const renderBigPictureItem = (data) => {
+  bigPictureItem.classList.remove('hidden');
+
+  bigPictureItem.querySelector('.big-picture__img img').src = data.url;
+  bigPictureItem.querySelector('.likes-count').textContent = data.likes;
+  bigPictureItem.querySelector('.social__caption').textContent = data.description;
+  bigPictureItem.querySelector('.comments-count').textContent = data.comments.length;
+
+  bigPictureItem.querySelector('.social__comment-count ').classList.add('hidden');
+  bigPictureItem.querySelector('.comments-loader').classList.add('hidden');
+
+  createCommentsAmount(data.comments);
+};
+
+// Показывает первую фотографию из массива объектов
+renderBigPictureItem(pictures[0]);
+
+const bodyTag = document.querySelector('body');
+bodyTag.classList.add('modal-open');
