@@ -147,21 +147,6 @@ const renderBigPictureItem = (pictureData) => {
 // Показывает первую фотографию из массива объектов
 renderBigPictureItem(pictures[0]);
 
-// picturesItem.addEventListener(`click`, (evt) => {
-//   renderTargetPicture(evt);
-// });
-//
-// const renderTargetPicture = (evt) => {
-//   const targetPicture = evt.target.closest(`.picture`);
-//   if (!targetPicture) {
-//     return;
-//   }
-//   if (!picturesItem.contains(targetPicture)) {
-//     return;
-//   }
-//   renderBigPictureItem(pictures(targetPicture.dataset.index));
-// };
-
 // Загрузка изображения и показ формы редактирования
 const uploadForm = document.querySelector(`.img-upload__form`);
 const fileUploadStart = uploadForm.querySelector(`#upload-file`);
@@ -181,8 +166,7 @@ const openEditForm = () => {
   document.addEventListener(`keydown`, editFormEscKeydownHandler);
   document.querySelector(`body`).classList.add(`modal-open`);
   editPhotoItem.addEventListener(`change`, editPhotoItemChangeHandler);
-  // editPhotoItem.addEventListener(`change`, filterChangeHandler);
-  // effectToggleItem.addEventListener(`mouseup`, toggleMouseUpHandler);
+  editPhotoItem.addEventListener(`change`, filterChangeHandler);
   effectBar.classList.add(`hidden`);
   scaleSmallerButton.addEventListener(`click`, smallerButtonClickHandler);
   scaleBiggerButton.addEventListener(`click`, biggerButtonClickHandler);
@@ -196,10 +180,8 @@ const closeEditForm = () => {
   viewPhotoItem.style.filter = ``;
   viewPhotoItem.style.transform = ``;
   editScaleValue.value = 100 + `%`;
-  // viewPhotoItem.classList.remove(`effects__preview--${evt.target.value}`);
   document.querySelector(`body`).classList.remove(`modal-open`);
   editPhotoItem.removeEventListener(`change`, editPhotoItemChangeHandler);
-  // effectToggleItem.removeEventListener(`mouseup`, toggleMouseUpHandler);
   scaleSmallerButton.removeEventListener(`click`, smallerButtonClickHandler);
   scaleBiggerButton.removeEventListener(`click`, biggerButtonClickHandler);
   hashtagsInput.removeEventListener(`input`, hashtagInputHandler);
@@ -247,7 +229,6 @@ const effectLevelValue = effectBar.querySelector(`.effect-level__value`);
 const effectToggleItem = effectBar.querySelector(`.effect-level__pin`);
 const effectLevelLine = effectBar.querySelector(`.effect-level__line`);
 const effectDepthItem = effectBar.querySelector(`.effect-level__depth`);
-// const effectList = uploadForm.querySelector(`.effects`);
 
 effectBar.addEventListener(`mousedown`, (evt) => {
   evt.preventDefault();
@@ -265,8 +246,8 @@ effectBar.addEventListener(`mousedown`, (evt) => {
       effectDepthItem.style.width = togglePoint * 100 + `%`;
     }
   };
-  const toggleMouseUpHandler = (moveEvt) => {
-    moveEvt.preventDefault();
+  const toggleMouseUpHandler = (upEvt) => {
+    upEvt.preventDefault();
     document.removeEventListener(`mousemove`, toggleMouseMoveHandler);
     document.removeEventListener(`mouseup`, toggleMouseUpHandler);
   };
