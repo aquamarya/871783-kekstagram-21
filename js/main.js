@@ -170,6 +170,7 @@ const openEditForm = () => {
   effectBar.classList.add(`hidden`);
   scaleSmallerButton.addEventListener(`click`, smallerButtonClickHandler);
   scaleBiggerButton.addEventListener(`click`, biggerButtonClickHandler);
+  // scaleSmallerButton.addEventListener(`click`, buttonClickHandler);
   hashtagsInput.addEventListener(`input`, hashtagInputHandler);
 };
 
@@ -184,6 +185,7 @@ const closeEditForm = () => {
   editPhotoItem.removeEventListener(`change`, editPhotoItemChangeHandler);
   scaleSmallerButton.removeEventListener(`click`, smallerButtonClickHandler);
   scaleBiggerButton.removeEventListener(`click`, biggerButtonClickHandler);
+  // scaleSmallerButton.removeEventListener(`click`, buttonClickHandler);
   hashtagsInput.removeEventListener(`input`, hashtagInputHandler);
 };
 
@@ -201,12 +203,6 @@ fileUploadStart.addEventListener(`keydown`, (evt) => {
 closeButton.addEventListener(`click`, (evt) => {
   evt.preventDefault();
   closeEditForm();
-});
-
-closeButton.addEventListener(`keydown`, (evt) => {
-  if (evt.key === ENTER_KEY) {
-    closeEditForm();
-  }
 });
 
 const editPhotoItemChangeHandler = (evt) => {
@@ -306,12 +302,13 @@ const filterChangeHandler = (evt) => {
   }
 };
 const effectsItems = document.querySelectorAll(`.effects__radio`);
+effectsItems.forEach((effectsItem) => {
+  effectsItem.addEventListener(`click`, filterChangeHandler);
+});
 
-for (let i = 0; i < effectsItems.length; i++) {
-  effectsItems[i].addEventListener(`click`, filterChangeHandler);
-}
-
-// effectBar.addEventListener(`change`, filterChangeHandler);
+// for (let i = 0; i < effectsItems.length; i++) {
+//   effectsItems[i].addEventListener(`click`, filterChangeHandler);
+// }
 
 // Масштабирование изображения
 const scaleControls = uploadForm.querySelector(`.scale`);
@@ -330,23 +327,42 @@ const getScaleRange = (value) => {
 const smallerButtonClickHandler = () => {
   const currentScaleValue = getScaleValue();
   const newValue = getScaleRange(currentScaleValue - SCALE_STEP);
-  editScaleValue.value = newValue + `%`;
-  viewPhotoItem.style.transform = `$scale(${newValue / 100})`;
+  editScaleValue.value = `${newValue}%`;
+  viewPhotoItem.style.transform = `scale(${newValue / 100})`;
 };
+
+// const buttonClickHandler = (evt) => {
+//   const target = evt.target.closest(`button`);
+//   if (!target) {
+//     return;
+//   }
+//   const currentScaleValue = getScaleValue();
+//   let newValue;
+//   if (target === scaleSmallerButton) {
+//     if (editScaleValue > ScaleValue.MIN) {
+//       newValue = getScaleRange(currentScaleValue - SCALE_STEP);
+//     }
+//   }
+//   if (target === scaleBiggerButton) {
+//     if (editScaleValue < ScaleValue.MAX) {
+//       newValue = getScaleRange(currentScaleValue + SCALE_STEP);
+//     }
+//   }
+//   viewPhotoItem.style.transform = `scale(${newValue / 100})`;
+//   editScaleValue.value = `${newValue}%`;
+// };
 
 const biggerButtonClickHandler = () => {
   const currentScaleValue = getScaleValue();
   const newValue = getScaleRange(currentScaleValue + SCALE_STEP);
-  editScaleValue.value = newValue + `%`;
+  editScaleValue.value = `${newValue}%`;
   viewPhotoItem.style.transform = `scale(${newValue / 100})`;
 };
 
 // Валидация хеш-тегов
 const hashtagsInput = uploadForm.querySelector(`.text__hashtags`);
 
-const hasSymbols = (symbol) => {
-  return symbol.match(/^#[a-zA-Z0-9а-яА-Я]+$/);
-};
+const hasSymbols = (symbol) => symbol.match(/^#[a-zA-Z0-9а-яА-Я]+$/);
 
 const checkDuplicateHashtags = (hashtags, hashtag) => {
   const index = hashtags.indexOf(hashtag) + 1;
@@ -358,40 +374,27 @@ const checkDuplicateHashtags = (hashtags, hashtag) => {
 // };
 
 const getValidityMessages = (hashtags) => {
-  let warningMessage = ``;
   if (hashtags.length > HASHTAG_MAX_AMOUNT) {
-    warningMessage = `нельзя указать больше ${HASHTAG_MAX_AMOUNT} хэш-тегов`;
-    return warningMessage;
-    // выводится
+    return `нельзя указать больше ${HASHTAG_MAX_AMOUNT} хэш-тегов`;
   }
   for (let i = 0; i < hashtags.length; i++) {
     const hashtag = hashtags[i];
     if (hashtag[0] !== `#`) {
-      warningMessage = `хэш-тег начинается с символа # (решётка)`;
-      return warningMessage;
-      // нет
+      return `хэш-тег начинается с символа # (решётка)`;
     } else if (hashtags[i].length < HashtagsLength.MIN) {
-      warningMessage = `хеш-тег не может состоять только из одной решётки`;
-      return warningMessage;
-      // выводится
+      return `хеш-тег не может состоять только из одной решётки`;
     } else if (!hasSymbols(hashtags[i])) {
-      warningMessage = `строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.`;
-      return warningMessage;
-      // нет
+      return `строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.`;
     } else if (hashtags[i].length > HashtagsLength.MAX) {
-      warningMessage = `максимальная длина одного хэш-тега ${HashtagsLength.MAX} символов, включая решётку`;
-      return warningMessage;
-      // нет
+      return `максимальная длина одного хэш-тега ${HashtagsLength.MAX} символов, включая решётку`;
     } else if (checkDuplicateHashtags(hashtags, hashtag) !== -1) {
-      warningMessage = `один и тот же хэш-тег не может быть использован дважды`;
-      return warningMessage;
-      // нет
+      return `один и тот же хэш-тег не может быть использован дважды`;
     }
   }
-  return warningMessage;
+  return ` `;
 };
 
 const hashtagInputHandler = (evt) => {
-  const hashtags = hashtagsInput.value.toLowerCase().split(``);
+  const hashtags = evt.target.value.toLowerCase().split(` `);
   evt.target.setCustomValidity(getValidityMessages(hashtags));
 };
