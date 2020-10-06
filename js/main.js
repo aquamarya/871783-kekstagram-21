@@ -30,16 +30,15 @@ const LikesAmount = {
   MAX: 200,
 };
 const ESC_KEY = `Escape`;
-const ENTER_KEY = `Enter`;
 const HashtagsLength = {
   MIN: 2,
   MAX: 20,
 };
 const HASHTAG_MAX_AMOUNT = 5;
-const SCALE_STEP = 25;
-const ScaleValue = {
-  MIN: 25,
-  MAX: 100,
+const Scale = {
+  MIN_VALUE: 25,
+  MAX_VALUE: 100,
+  STEP: 25
 };
 
 // Возвращает результат, включая максимум и минимум
@@ -131,8 +130,6 @@ const createCommentsFragment = (commentData) => {
 
 // Отрисовывает большое фото
 const renderBigPictureItem = (pictureData) => {
-  // bigPictureItem.classList.remove(`hidden`);
-
   bigPictureItem.querySelector(`.big-picture__img img`).src = pictureData.url;
   bigPictureItem.querySelector(`.likes-count`).textContent = pictureData.likes;
   bigPictureItem.querySelector(`.social__caption`).textContent = pictureData.description;
@@ -166,11 +163,9 @@ const openEditForm = () => {
   document.addEventListener(`keydown`, editFormEscKeydownHandler);
   document.querySelector(`body`).classList.add(`modal-open`);
   editPhotoItem.addEventListener(`change`, editPhotoItemChangeHandler);
-  editPhotoItem.addEventListener(`change`, filterChangeHandler);
   effectBar.classList.add(`hidden`);
   scaleSmallerButton.addEventListener(`click`, smallerButtonClickHandler);
   scaleBiggerButton.addEventListener(`click`, biggerButtonClickHandler);
-  // scaleSmallerButton.addEventListener(`click`, buttonClickHandler);
   hashtagsInput.addEventListener(`input`, hashtagInputHandler);
 };
 
@@ -185,19 +180,12 @@ const closeEditForm = () => {
   editPhotoItem.removeEventListener(`change`, editPhotoItemChangeHandler);
   scaleSmallerButton.removeEventListener(`click`, smallerButtonClickHandler);
   scaleBiggerButton.removeEventListener(`click`, biggerButtonClickHandler);
-  // scaleSmallerButton.removeEventListener(`click`, buttonClickHandler);
   hashtagsInput.removeEventListener(`input`, hashtagInputHandler);
 };
 
 fileUploadStart.addEventListener(`change`, (evt) => {
   evt.preventDefault();
   openEditForm();
-});
-
-fileUploadStart.addEventListener(`keydown`, (evt) => {
-  if (evt.key === ENTER_KEY) {
-    openEditForm();
-  }
 });
 
 closeButton.addEventListener(`click`, (evt) => {
@@ -259,30 +247,27 @@ const renderEffectBar = () => {
 
 const removeEffect = () => {
   const effects = Array.from(viewPhotoItem.classList);
-  for (let i = 0; i < effects.length; i++) {
-    if (effects[i].match(`effects__preview--`)) {
-      viewPhotoItem.classList.remove(effects[i]);
+  effects.forEach((effect) => {
+    if (effect.match(`effects__preview--`)) {
+      viewPhotoItem.classList.remove(effect);
     }
+  });
+};
+
+const applyFilter = (effect, showEffectBar = true) => {
+  if (showEffectBar) {
+    renderEffectBar();
+  } else {
+    effectBar.classList.add(`hidden`);
   }
-};
-
-const hideEffect = () => {
-  effectBar.classList.add(`hidden`);
-};
-
-const applyFilter = (effect) => {
-  renderEffectBar();
   removeEffect();
   viewPhotoItem.classList.add(effect);
 };
 
 const filterChangeHandler = (evt) => {
-  const currentFilter = evt.target.value;
-  switch (currentFilter.id) {
+  switch (evt.target.id) {
     case `effect-none`:
-      removeEffect();
-      hideEffect();
-      viewPhotoItem.classList.add(`effects__preview--none`);
+      applyFilter(`effects__preview--none`);
       break;
     case `effect-chrome`:
       applyFilter(`effects__preview--chrome`);
@@ -301,14 +286,10 @@ const filterChangeHandler = (evt) => {
       break;
   }
 };
-const effectsItems = document.querySelectorAll(`.effects__radio`);
-effectsItems.forEach((effectsItem) => {
+
+document.querySelectorAll(`.effects__radio`).forEach((effectsItem) => {
   effectsItem.addEventListener(`click`, filterChangeHandler);
 });
-
-// for (let i = 0; i < effectsItems.length; i++) {
-//   effectsItems[i].addEventListener(`click`, filterChangeHandler);
-// }
 
 // Масштабирование изображения
 const scaleControls = uploadForm.querySelector(`.scale`);
@@ -321,42 +302,21 @@ const getScaleValue = () => {
 };
 
 const getScaleRange = (value) => {
-  return Math.min(ScaleValue.MAX, Math.max(ScaleValue.MIN, value));
+  return Math.min(Scale.MAX_VALUE, Math.max(Scale.MIN_VALUE, value));
 };
 
 const smallerButtonClickHandler = () => {
-  const currentScaleValue = getScaleValue();
-  const newValue = getScaleRange(currentScaleValue - SCALE_STEP);
-  editScaleValue.value = `${newValue}%`;
-  viewPhotoItem.style.transform = `scale(${newValue / 100})`;
+  calculateScale(getScaleValue() - Scale.STEP);
 };
 
-// const buttonClickHandler = (evt) => {
-//   const target = evt.target.closest(`button`);
-//   if (!target) {
-//     return;
-//   }
-//   const currentScaleValue = getScaleValue();
-//   let newValue;
-//   if (target === scaleSmallerButton) {
-//     if (editScaleValue > ScaleValue.MIN) {
-//       newValue = getScaleRange(currentScaleValue - SCALE_STEP);
-//     }
-//   }
-//   if (target === scaleBiggerButton) {
-//     if (editScaleValue < ScaleValue.MAX) {
-//       newValue = getScaleRange(currentScaleValue + SCALE_STEP);
-//     }
-//   }
-//   viewPhotoItem.style.transform = `scale(${newValue / 100})`;
-//   editScaleValue.value = `${newValue}%`;
-// };
+const calculateScale = (newValue) => {
+  const newScaleValue = getScaleRange(newValue);
+  editScaleValue.value = `${newScaleValue}%`;
+  viewPhotoItem.style.transform = `scale(${newScaleValue / 100})`;
+};
 
 const biggerButtonClickHandler = () => {
-  const currentScaleValue = getScaleValue();
-  const newValue = getScaleRange(currentScaleValue + SCALE_STEP);
-  editScaleValue.value = `${newValue}%`;
-  viewPhotoItem.style.transform = `scale(${newValue / 100})`;
+  calculateScale(getScaleValue() + Scale.STEP);
 };
 
 // Валидация хеш-тегов
@@ -377,21 +337,20 @@ const getValidityMessages = (hashtags) => {
   if (hashtags.length > HASHTAG_MAX_AMOUNT) {
     return `нельзя указать больше ${HASHTAG_MAX_AMOUNT} хэш-тегов`;
   }
-  for (let i = 0; i < hashtags.length; i++) {
-    const hashtag = hashtags[i];
+  for (let hashtag of hashtags) {
     if (hashtag[0] !== `#`) {
       return `хэш-тег начинается с символа # (решётка)`;
-    } else if (hashtags[i].length < HashtagsLength.MIN) {
+    } else if (hashtag.length < HashtagsLength.MIN) {
       return `хеш-тег не может состоять только из одной решётки`;
-    } else if (!hasSymbols(hashtags[i])) {
+    } else if (!hasSymbols(hashtag)) {
       return `строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д.`;
-    } else if (hashtags[i].length > HashtagsLength.MAX) {
+    } else if (hashtag.length > HashtagsLength.MAX) {
       return `максимальная длина одного хэш-тега ${HashtagsLength.MAX} символов, включая решётку`;
     } else if (checkDuplicateHashtags(hashtags, hashtag) !== -1) {
       return `один и тот же хэш-тег не может быть использован дважды`;
     }
   }
-  return ` `;
+  return ``;
 };
 
 const hashtagInputHandler = (evt) => {
