@@ -82,8 +82,9 @@ const picturesItem = document.querySelector(`.pictures`);
 const picturesTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
 
 // Копирует шаблон и добавляет в него данные
-const createPicture = (picture) => {
+const createPicture = (picture, index) => {
   const pictureElement = picturesTemplate.cloneNode(true);
+  pictureElement.dataset.index = index;
   pictureElement.querySelector(`.picture__img`).src = picture.url;
   pictureElement.querySelector(`.picture__comments`).textContent = picture.comments.length;
   pictureElement.querySelector(`.picture__likes`).textContent = picture.likes;
@@ -177,9 +178,9 @@ const renderTargetPicture = (evt) => {
   if (!targetPicture) {
     return;
   }
-  if (!picturesItem.contains(targetPicture)) {
-    return;
-  }
+  // if (!picturesItem.contains(targetPicture)) {
+  //   return;
+  // }
   const index = targetPicture.dataset.index;
   showBigPicture(pictures[index]);
 };
