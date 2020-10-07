@@ -106,6 +106,7 @@ createPicturesList(pictures);
 const commentsContainer = document.querySelector(`.social__comments`);
 const commentsItem = commentsContainer.querySelector(`.social__comment`);
 const bigPictureItem = document.querySelector(`.big-picture`);
+// const usersPicturesTemplate = document.querySelectorAll(`.picture`);
 
 // Создает один комментарий
 const createCommentItem = (commentData) => {
@@ -141,8 +142,47 @@ const renderBigPictureItem = (pictureData) => {
   createCommentsFragment(pictureData.comments);
 };
 
-// Показывает первую фотографию из массива объектов
-renderBigPictureItem(pictures[0]);
+// Переключает фотографии из массива объектов
+const closeBigPictureButton = bigPictureItem.querySelector('#picture-cancel');
+
+const closeButtonClickHandler = () => closeBigPicture();
+
+const bigPictureEscKeydownHandler = (evt) => {
+  if (evt.key === ESC_KEY) {
+    closeBigPicture();
+  }
+};
+
+const showBigPicture = (picture) => {
+  renderBigPictureItem(picture);
+  document.querySelector(`body`).classList.add(`modal-open`);
+  bigPictureItem.classList.remove(`hidden`);
+  document.addEventListener(`keydown`, bigPictureEscKeydownHandler);
+  closeBigPictureButton.addEventListener(`click`, closeButtonClickHandler);
+};
+
+const closeBigPicture = () => {
+  document.querySelector(`body`).classList.remove(`modal-open`);
+  bigPictureItem.classList.add(`hidden`);
+  document.removeEventListener(`keydown`, bigPictureEscKeydownHandler);
+  closeBigPictureButton.removeEventListener(`click`, closeButtonClickHandler);
+};
+
+picturesItem.addEventListener(`click`, (evt) => {
+  renderTargetPicture(evt);
+});
+
+const renderTargetPicture = (evt) => {
+  const targetPicture = evt.target.closest(`.picture`);
+  if (!targetPicture) {
+    return;
+  }
+  if (!picturesItem.contains(targetPicture)) {
+    return;
+  }
+  const index = targetPicture.dataset.index;
+  showBigPicture(pictures[index]);
+};
 
 // Загрузка изображения и показ формы редактирования
 const uploadForm = document.querySelector(`.img-upload__form`);
