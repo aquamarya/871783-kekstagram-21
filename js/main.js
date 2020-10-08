@@ -91,13 +91,13 @@ const createPicture = (picture) => {
 };
 
 // Создает и заполняет DOM-элементы
-const createPicturesList = (pictures) => {
+const createPicturesList = (pictures, i) => {
   const fragment = document.createDocumentFragment();
-  for (let i = 0; i < pictures.length; i++) {
-    const createdPicture = createPicture(pictures[i], i);
+  for (let picture of pictures) {
+    const createdPicture = createPicture(picture, i);
     fragment.appendChild(createdPicture);
     createdPicture.addEventListener(`click`, () => {
-      showBigPicture(pictures[i]);
+      showBigPicture(picture);
     });
   }
   picturesItem.appendChild(fragment);
