@@ -82,9 +82,8 @@ const picturesItem = document.querySelector(`.pictures`);
 const picturesTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
 
 // Копирует шаблон и добавляет в него данные
-const createPicture = (picture, index) => {
+const createPicture = (picture) => {
   const pictureElement = picturesTemplate.cloneNode(true);
-  pictureElement.dataset.index = index;
   pictureElement.querySelector(`.picture__img`).src = picture.url;
   pictureElement.querySelector(`.picture__comments`).textContent = picture.comments.length;
   pictureElement.querySelector(`.picture__likes`).textContent = picture.likes;
@@ -95,7 +94,11 @@ const createPicture = (picture, index) => {
 const createPicturesList = (pictures) => {
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < pictures.length; i++) {
-    fragment.appendChild(createPicture(pictures[i], i));
+    const createdPicture = createPicture(pictures[i], i);
+    fragment.appendChild(createdPicture);
+    createdPicture.addEventListener(`click`, () => {
+      showBigPicture(pictures[i]);
+    });
   }
   picturesItem.appendChild(fragment);
 };
@@ -107,7 +110,6 @@ createPicturesList(pictures);
 const commentsContainer = document.querySelector(`.social__comments`);
 const commentsItem = commentsContainer.querySelector(`.social__comment`);
 const bigPictureItem = document.querySelector(`.big-picture`);
-// const usersPicturesTemplate = document.querySelectorAll(`.picture`);
 
 // Создает один комментарий
 const createCommentItem = (commentData) => {
@@ -167,22 +169,6 @@ const closeBigPicture = () => {
   bigPictureItem.classList.add(`hidden`);
   document.removeEventListener(`keydown`, bigPictureEscKeydownHandler);
   closeBigPictureButton.removeEventListener(`click`, closeButtonClickHandler);
-};
-
-picturesItem.addEventListener(`click`, (evt) => {
-  renderTargetPicture(evt);
-});
-
-const renderTargetPicture = (evt) => {
-  const targetPicture = evt.target.closest(`.picture`);
-  if (!targetPicture) {
-    return;
-  }
-  if (!picturesItem.contains(targetPicture)) {
-    return;
-  }
-  const index = targetPicture.dataset.index;
-  showBigPicture(pictures[index]);
 };
 
 // Загрузка изображения и показ формы редактирования
@@ -369,10 +355,6 @@ const checkDuplicateHashtags = (hashtags, hashtag) => {
   const index = hashtags.indexOf(hashtag) + 1;
   return hashtags.indexOf(hashtag, index);
 };
-
-// const setWarningBorder = (evt) => {
-//   evt.target.style.border = `2px solid red`;
-// };
 
 const getValidityMessages = (hashtags) => {
   if (hashtags.length > HASHTAG_MAX_AMOUNT) {
