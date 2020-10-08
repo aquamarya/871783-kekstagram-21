@@ -95,7 +95,7 @@ const createPicture = (picture, index) => {
 const createPicturesList = (pictures) => {
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < pictures.length; i++) {
-    fragment.appendChild(createPicture(pictures[i]));
+    fragment.appendChild(createPicture(pictures[i], i));
   }
   picturesItem.appendChild(fragment);
 };
@@ -178,9 +178,9 @@ const renderTargetPicture = (evt) => {
   if (!targetPicture) {
     return;
   }
-  // if (!picturesItem.contains(targetPicture)) {
-  //   return;
-  // }
+  if (!picturesItem.contains(targetPicture)) {
+    return;
+  }
   const index = targetPicture.dataset.index;
   showBigPicture(pictures[index]);
 };
