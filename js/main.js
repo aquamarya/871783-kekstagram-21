@@ -91,10 +91,14 @@ const createPicture = (picture) => {
 };
 
 // Создает и заполняет DOM-элементы
-const createPicturesList = (pictures) => {
+const createPicturesList = (pictures, i) => {
   const fragment = document.createDocumentFragment();
-  for (let i = 0; i < pictures.length; i++) {
-    fragment.appendChild(createPicture(pictures[i]));
+  for (let picture of pictures) {
+    const createdPicture = createPicture(picture, i);
+    fragment.appendChild(createdPicture);
+    createdPicture.addEventListener(`click`, () => {
+      showBigPicture(picture);
+    });
   }
   picturesItem.appendChild(fragment);
 };
@@ -141,8 +145,31 @@ const renderBigPictureItem = (pictureData) => {
   createCommentsFragment(pictureData.comments);
 };
 
-// Показывает первую фотографию из массива объектов
-renderBigPictureItem(pictures[0]);
+// Переключает фотографии из массива объектов
+const closeBigPictureButton = bigPictureItem.querySelector('#picture-cancel');
+
+const closeButtonClickHandler = () => closeBigPicture();
+
+const bigPictureEscKeydownHandler = (evt) => {
+  if (evt.key === ESC_KEY) {
+    closeBigPicture();
+  }
+};
+
+const showBigPicture = (picture) => {
+  renderBigPictureItem(picture);
+  document.querySelector(`body`).classList.add(`modal-open`);
+  bigPictureItem.classList.remove(`hidden`);
+  document.addEventListener(`keydown`, bigPictureEscKeydownHandler);
+  closeBigPictureButton.addEventListener(`click`, closeButtonClickHandler);
+};
+
+const closeBigPicture = () => {
+  document.querySelector(`body`).classList.remove(`modal-open`);
+  bigPictureItem.classList.add(`hidden`);
+  document.removeEventListener(`keydown`, bigPictureEscKeydownHandler);
+  closeBigPictureButton.removeEventListener(`click`, closeButtonClickHandler);
+};
 
 // Загрузка изображения и показ формы редактирования
 const uploadForm = document.querySelector(`.img-upload__form`);
@@ -328,10 +355,6 @@ const checkDuplicateHashtags = (hashtags, hashtag) => {
   const index = hashtags.indexOf(hashtag) + 1;
   return hashtags.indexOf(hashtag, index);
 };
-
-// const setWarningBorder = (evt) => {
-//   evt.target.style.border = `2px solid red`;
-// };
 
 const getValidityMessages = (hashtags) => {
   if (hashtags.length > HASHTAG_MAX_AMOUNT) {
