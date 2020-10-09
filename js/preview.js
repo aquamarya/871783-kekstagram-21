@@ -42,6 +42,6 @@
   };
 
   window.preview = {
-    showBigPicture: showBigPicture
+    showBigPicture
   };
 })();

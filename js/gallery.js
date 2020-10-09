@@ -26,7 +26,8 @@
     picturesItem.appendChild(fragment);
   };
 
-  createPicturesList(window.data.pictures);
+  const pictures = window.data.createPhotoDescription(window.data.PICTURES_AMOUNT);
+  createPicturesList(pictures);
 
   const commentsContainer = document.querySelector(`.social__comments`);
   const commentsItem = document.querySelector(`.social__comment`);
@@ -53,6 +54,6 @@
   };
 
   window.gallery = {
-    createCommentsFragment: createCommentsFragment
+    createCommentsFragment
   };
 })();

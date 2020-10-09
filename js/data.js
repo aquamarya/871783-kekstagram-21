@@ -58,9 +58,8 @@
     return photoDescriptions;
   };
 
-  const pictures = createPhotoDescription(PICTURES_AMOUNT);
-
   window.data = {
-    pictures: pictures
+    createPhotoDescription,
+    PICTURES_AMOUNT
   };
 })();

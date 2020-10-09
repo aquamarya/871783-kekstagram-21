@@ -55,7 +55,4 @@
     evt.preventDefault();
     closeEditForm();
   });
-  window.validation = {
-
-  };
 })();

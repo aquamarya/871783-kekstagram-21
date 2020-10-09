@@ -14,8 +14,8 @@
   const getRandomArrayElement = (array) => array[getRandomIntInclusive(0, array.length - 1)];
 
   window.util = {
-    ESC_KEY: ESC_KEY,
-    getRandomIntInclusive: getRandomIntInclusive,
-    getRandomArrayElement: getRandomArrayElement
+    ESC_KEY,
+    getRandomIntInclusive,
+    getRandomArrayElement
   };
 })();

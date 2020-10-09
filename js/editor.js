@@ -135,10 +135,10 @@
   };
 
   window.editor = {
-    editPhotoItemChangeHandler: editPhotoItemChangeHandler,
-    scaleSmallerButton: scaleSmallerButton,
-    scaleBiggerButton: scaleBiggerButton,
-    biggerButtonClickHandler: biggerButtonClickHandler,
-    smallerButtonClickHandler: smallerButtonClickHandler
+    editPhotoItemChangeHandler,
+    scaleSmallerButton,
+    scaleBiggerButton,
+    biggerButtonClickHandler,
+    smallerButtonClickHandler
   };
 })();

@@ -40,6 +40,6 @@
     evt.target.setCustomValidity(getValidityMessages(hashtags));
   };
   window.validation = {
-    hashtagInputHandler: hashtagInputHandler
+    hashtagInputHandler
   };
 })();
