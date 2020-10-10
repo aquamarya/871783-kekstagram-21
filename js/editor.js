@@ -6,12 +6,32 @@
     MAX_VALUE: 100,
     STEP: 25
   };
+  const Chrome = {
+    MIN: 0,
+    MAX: 1
+  };
+  const Sepia = {
+    MIN: 0,
+    MAX: 1
+  };
+  const Marvin = {
+    MIN: 0,
+    MAX: 100
+  };
+  const Phobos = {
+    MIN: 0,
+    MAX: 3
+  };
+  const Heat = {
+    MIN: 1,
+    MAX: 3
+  };
+  const MAX_EFFECT_LEVEL = 100;
 
   const viewPhotoItem = document.querySelector(`.img-upload__preview img`);
   const effectBar = document.querySelector(`.effect-level`);
   const effectLevelValue = effectBar.querySelector(`.effect-level__value`);
   const effectToggleItem = effectBar.querySelector(`.effect-level__pin`);
-  const effectLevelLine = effectBar.querySelector(`.effect-level__line`);
   const effectDepthItem = effectBar.querySelector(`.effect-level__depth`);
 
   const editPhotoItemChangeHandler = (evt) => {
@@ -24,35 +44,10 @@
       } else {
         effectBar.classList.remove(`hidden`);
         viewPhotoItem.classList.add(`effects__preview--${currentFilter}`);
+        viewPhotoItem.style.filter = ``;
       }
     }
   };
-
-  // Уровень насыщенности фильтра
-  effectBar.addEventListener(`mousedown`, (evt) => {
-    evt.preventDefault();
-    const lineWidth = effectLevelLine.offsetWidth;
-    let startCoords = evt.clientX;
-    const toggleMouseMoveHandler = (moveEvt) => {
-      moveEvt.preventDefault();
-      const shift = startCoords - moveEvt.clientX;
-      const toggleCoordsX = effectToggleItem.offsetLeft - shift;
-      startCoords = moveEvt.clientX;
-      if (!(toggleCoordsX < 0 || toggleCoordsX > lineWidth)) {
-        const togglePoint = toggleCoordsX / effectLevelLine.offsetWidth;
-        effectToggleItem.style.left = toggleCoordsX + `px`;
-        effectLevelValue.value = Math.round(togglePoint * 100);
-        effectDepthItem.style.width = togglePoint * 100 + `%`;
-      }
-    };
-    const toggleMouseUpHandler = (upEvt) => {
-      upEvt.preventDefault();
-      document.removeEventListener(`mousemove`, toggleMouseMoveHandler);
-      document.removeEventListener(`mouseup`, toggleMouseUpHandler);
-    };
-    document.addEventListener(`mousemove`, toggleMouseMoveHandler);
-    document.addEventListener(`mouseup`, toggleMouseUpHandler);
-  });
 
   const renderEffectBar = () => {
     if (effectBar.classList.contains(`hidden`)) {
@@ -72,6 +67,7 @@
   const applyFilter = (effect, showEffectBar = true) => {
     if (showEffectBar) {
       renderEffectBar();
+      setDefaultDepthLevel();
     } else {
       effectBar.classList.add(`hidden`);
     }
@@ -106,6 +102,42 @@
     effectsItem.addEventListener(`click`, filterChangeHandler);
   });
 
+  const setDefaultDepthLevel = () => {
+    effectToggleItem.style.left = `${MAX_EFFECT_LEVEL}%`;
+    effectDepthItem.style.width = `${MAX_EFFECT_LEVEL}%`;
+    effectLevelValue.value = `${MAX_EFFECT_LEVEL}`;
+    viewPhotoItem.style.filter = ``;
+  };
+
+  const getEffectDepth = (depth) => ((effectLevelValue.value * (depth.max - depth.min)) / MAX_EFFECT_LEVEL) + depth.min;
+
+  const createNewDepthLevel = () => {
+    const effectsNames = Array.from(viewPhotoItem.classList);
+    for (let effectsName of effectsNames) {
+      if (effectsName.match(`effects__preview--`)) {
+        switch (effectsName) {
+          case `effects__preview--chrome`:
+            viewPhotoItem.style.filter = `grayscale(${getEffectDepth}(${Chrome}))`;
+            break;
+          case `effects__preview--sepia`:
+            viewPhotoItem.style.filter = `sepia(${getEffectDepth}(${Sepia}))`;
+            break;
+          case `effects__preview--marvin`:
+            viewPhotoItem.style.filter = `invert(${getEffectDepth}(${Marvin})%)`;
+            break;
+          case `effects__preview--phobos`:
+            viewPhotoItem.style.filter = `blur(${getEffectDepth}(${Phobos})px)`;
+            break;
+          case `effects__preview--heat`:
+            viewPhotoItem.style.filter = `brightness(${getEffectDepth}(${Heat}))`;
+            break;
+          default:
+            viewPhotoItem.style.filter = ``;
+        }
+      }
+    }
+  };
+
   // Масштабирование изображения
   const scaleControls = document.querySelector(`.scale`);
   const scaleSmallerButton = scaleControls.querySelector(`.scale__control--smaller`);
@@ -136,6 +168,9 @@
 
   window.editor = {
     editPhotoItemChangeHandler,
+    setDefaultDepthLevel,
+    createNewDepthLevel,
+    removeEffect,
     scaleSmallerButton,
     scaleBiggerButton,
     biggerButtonClickHandler,
