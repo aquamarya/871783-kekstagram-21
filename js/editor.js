@@ -171,8 +171,6 @@
     setDefaultDepthLevel,
     createNewDepthLevel,
     removeEffect,
-    scaleSmallerButton,
-    scaleBiggerButton,
     biggerButtonClickHandler,
     smallerButtonClickHandler
   };
