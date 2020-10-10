@@ -29,7 +29,7 @@
     effectBar.classList.add(`hidden`);
     window.editor.removeEffect();
     window.editor.setDefaultDepthLevel();
-    scaleSmallerButton.addEventListener(`click`, window.editor.mallerButtonClickHandler);
+    scaleSmallerButton.addEventListener(`click`, window.editor.smallerButtonClickHandler);
     scaleBiggerButton.addEventListener(`click`, window.editor.biggerButtonClickHandler);
     hashtagsInput.addEventListener(`input`, window.validation.hashtagInputHandler);
   };

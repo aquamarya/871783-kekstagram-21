@@ -140,8 +140,6 @@
 
   // Масштабирование изображения
   const scaleControls = document.querySelector(`.scale`);
-  const scaleSmallerButton = scaleControls.querySelector(`.scale__control--smaller`);
-  const scaleBiggerButton = scaleControls.querySelector(`.scale__control--bigger`);
   const editScaleValue = scaleControls.querySelector(`.scale__control--value`);
 
   const getScaleValue = () => {
