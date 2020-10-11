@@ -44,7 +44,7 @@
       } else {
         effectBar.classList.remove(`hidden`);
         viewPhotoItem.classList.add(`effects__preview--${currentFilter}`);
-        viewPhotoItem.style.filter = ``;
+        setDefaultDepthLevel();
       }
     }
   };
@@ -109,7 +109,7 @@
     viewPhotoItem.style.filter = ``;
   };
 
-  const getEffectDepth = (depth) => ((effectLevelValue.value * (depth.max - depth.min)) / MAX_EFFECT_LEVEL) + depth.min;
+  const getEffectDepth = (depth) => ((effectLevelValue.value * (depth.MAX - depth.MIN)) / MAX_EFFECT_LEVEL) + depth.MIN;
 
   const createNewDepthLevel = () => {
     const effectsNames = Array.from(viewPhotoItem.classList);
@@ -117,19 +117,19 @@
       if (effectsName.match(`effects__preview--`)) {
         switch (effectsName) {
           case `effects__preview--chrome`:
-            viewPhotoItem.style.filter = `grayscale(${getEffectDepth}(${Chrome}))`;
+            viewPhotoItem.style.filter = `grayscale(${getEffectDepth(Chrome)})`;
             break;
           case `effects__preview--sepia`:
-            viewPhotoItem.style.filter = `sepia(${getEffectDepth}(${Sepia}))`;
+            viewPhotoItem.style.filter = `sepia(${getEffectDepth(Sepia)})`;
             break;
           case `effects__preview--marvin`:
-            viewPhotoItem.style.filter = `invert(${getEffectDepth}(${Marvin})%)`;
+            viewPhotoItem.style.filter = `invert(${getEffectDepth(Marvin)}%)`;
             break;
           case `effects__preview--phobos`:
-            viewPhotoItem.style.filter = `blur(${getEffectDepth}(${Phobos})px)`;
+            viewPhotoItem.style.filter = `blur(${getEffectDepth(Phobos)}px)`;
             break;
           case `effects__preview--heat`:
-            viewPhotoItem.style.filter = `brightness(${getEffectDepth}(${Heat}))`;
+            viewPhotoItem.style.filter = `brightness(${getEffectDepth(Heat)})`;
             break;
           default:
             viewPhotoItem.style.filter = ``;
