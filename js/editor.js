@@ -109,7 +109,9 @@
     viewPhotoItem.style.filter = ``;
   };
 
-  const getEffectDepth = (depth) => ((effectLevelValue.value * (depth.MAX - depth.MIN)) / MAX_EFFECT_LEVEL) + depth.MIN;
+  const getEffectDepth = (depth) => {
+    return ((effectLevelValue.value * (depth.MAX - depth.MIN)) / MAX_EFFECT_LEVEL) + depth.MIN;
+  };
 
   const createNewDepthLevel = () => {
     const effectsNames = Array.from(viewPhotoItem.classList);
