@@ -27,7 +27,9 @@
     document.querySelector(`body`).classList.add(`modal-open`);
     editPhotoItem.addEventListener(`change`, window.editor.editPhotoItemChangeHandler);
     effectBar.classList.add(`hidden`);
-    scaleSmallerButton.addEventListener(`click`, window.editor.mallerButtonClickHandler);
+    window.editor.removeEffect();
+    window.editor.setDefaultDepthLevel();
+    scaleSmallerButton.addEventListener(`click`, window.editor.smallerButtonClickHandler);
     scaleBiggerButton.addEventListener(`click`, window.editor.biggerButtonClickHandler);
     hashtagsInput.addEventListener(`input`, window.validation.hashtagInputHandler);
   };
