@@ -26,8 +26,10 @@
     picturesItem.appendChild(fragment);
   };
 
-  const pictures = window.data.createPhotoDescription(window.data.PICTURES_AMOUNT);
-  createPicturesList(pictures);
+  // const pictures = window.data.createPhotoDescription(window.data.PICTURES_AMOUNT);
+  // createPicturesList(pictures);
+  // window.data.createPhotoDescription(window.data.PICTURES_AMOUNT);
+  window.backend.load(createPicturesList, window.backend.errorHandler);
 
   const commentsContainer = document.querySelector(`.social__comments`);
   const commentsItem = document.querySelector(`.social__comment`);
@@ -54,6 +56,7 @@
   };
 
   window.gallery = {
-    createCommentsFragment
+    createCommentsFragment,
+    createPicturesList
   };
 })();
