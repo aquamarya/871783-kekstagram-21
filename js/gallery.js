@@ -26,9 +26,6 @@
     picturesItem.appendChild(fragment);
   };
 
-  // const pictures = window.data.createPhotoDescription(window.data.PICTURES_AMOUNT);
-  // createPicturesList(pictures);
-  // window.data.createPhotoDescription(window.data.PICTURES_AMOUNT);
   window.backend.load(createPicturesList, window.backend.errorHandler);
 
   const commentsContainer = document.querySelector(`.social__comments`);
