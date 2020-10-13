@@ -10,7 +10,7 @@
   };
   const TIMEOUT = 10000;
 
-  const load = function (url, onSuccess, onError) {
+  const load = function (onSuccess, onError) {
     const xhr = new XMLHttpRequest();
 
     xhr.responseType = `json`;
