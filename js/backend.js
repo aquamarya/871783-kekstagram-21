@@ -10,7 +10,7 @@
   };
   const TIMEOUT = 10000;
 
-  const load = function (onSuccess, onError) {
+  const load = (onSuccess, onError) => {
     const xhr = new XMLHttpRequest();
 
     xhr.responseType = `json`;
@@ -32,7 +32,7 @@
           break;
 
         default:
-          error = `Статус ответа: : ` + xhr.status + ` ` + xhr.statusText;
+          error = `Статус ответа: ${xhr.status} ${xhr.statusText}`;
       }
 
       if (error) {
@@ -45,7 +45,7 @@
     });
 
     xhr.addEventListener(`timeout`, () => {
-      onError(`Запрос не успел выполниться за ` + xhr.TIMEOUT + `мс`);
+      onError(`Запрос не успел выполниться за ${xhr.TIMEOUT}мс`);
     });
 
     xhr.TIMEOUT = TIMEOUT;
@@ -54,13 +54,13 @@
     xhr.send();
   };
 
-  const errorHandler = function (errorMessage) {
+  const errorHandler = (errorMessage) => {
     const node = document.createElement(`div`);
-    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red;`;
+    node.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: #ff4e4e; border: 2px solid white;`;
     node.style.position = `absolute`;
     node.style.left = 0;
     node.style.right = 0;
-    node.style.fontSize = `30px`;
+    node.style.fontSize = `24px`;
 
     node.textContent = errorMessage;
     document.body.insertAdjacentElement(`afterbegin`, node);

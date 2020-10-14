@@ -54,6 +54,5 @@
 
   window.gallery = {
     createCommentsFragment,
-    createPicturesList
   };
 })();
