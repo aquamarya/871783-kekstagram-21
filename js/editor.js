@@ -103,9 +103,9 @@
   });
 
   const setDefaultDepthLevel = () => {
-    effectToggleItem.style.left = `${MAX_EFFECT_LEVEL}%`;
-    effectDepthItem.style.width = `${MAX_EFFECT_LEVEL}%`;
-    effectLevelValue.value = `${MAX_EFFECT_LEVEL}`;
+    effectToggleItem.style.left = MAX_EFFECT_LEVEL + `%`;
+    effectDepthItem.style.width = MAX_EFFECT_LEVEL + `%`;
+    effectLevelValue.value = MAX_EFFECT_LEVEL;
     viewPhotoItem.style.filter = ``;
   };
 
