@@ -10,6 +10,7 @@
     ETERNAL_SERVER_ERROR: 500
   };
   const TIMEOUT = 10000;
+  const ZET_INDEX = 100;
   const mainBlock = document.querySelector(`main`);
 
   const createResponse = (xhr, onSuccess, onError) => {
@@ -70,6 +71,7 @@
     mainBlock.appendChild(message);
     const closeButton = mainBlock.querySelector(`.${type}__button`);
     const popup = mainBlock.querySelector(`.${type}`);
+    popup.style.zIndex = ZET_INDEX;
 
     closeButton.addEventListener(`click`, () => {
       popup.remove();
@@ -102,14 +104,17 @@
   const errorHandler = () => {
     const templateErrorMessage = document.querySelector(`#error`).content.querySelector(`.error`);
     const messageElement = templateErrorMessage.cloneNode(true);
-
+    messageElement.querySelector(`h2`).textContent = `Ошибка загрузки файла`;
+    messageElement.querySelector(`button`).textContent = `Загрузить другой файл`;
     renderMessage(messageElement, `error`);
   };
 
   const successHandler = () => {
-    const templateSuccessMessage = document.querySelector(`#succes`).content.querySelector(`.success`);
+    const templateSuccessMessage = document.querySelector(`#success`).content.querySelector(`.success`);
     const messageElement = templateSuccessMessage.cloneNode(true);
 
+    messageElement.querySelector(`h2`).textContent = `Изображение успешно загружено`;
+    messageElement.querySelector(`button`).textContent = `Круто!`;
     renderMessage(messageElement, `success`);
   };
 

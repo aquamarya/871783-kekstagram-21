@@ -14,7 +14,6 @@
   const editScaleValue = scaleControls.querySelector(`.scale__control--value`);
   const hashtagsInput = uploadForm.querySelector(`.text__hashtags`);
 
-
   const editFormEscKeydownHandler = (evt) => {
     if (hashtagsInput !== document.activeElement && descriptionInput !== document.activeElement && evt.key === window.util.ESC_KEY) {
       closeEditForm();
@@ -32,6 +31,7 @@
     scaleSmallerButton.addEventListener(`click`, window.editor.smallerButtonClickHandler);
     scaleBiggerButton.addEventListener(`click`, window.editor.biggerButtonClickHandler);
     hashtagsInput.addEventListener(`input`, window.validation.hashtagInputHandler);
+    uploadForm.addEventListener(`submit`, uploadFormSubmitHandler);
   };
 
   const closeEditForm = () => {
@@ -46,6 +46,12 @@
     scaleSmallerButton.removeEventListener(`click`, window.editor.smallerButtonClickHandler);
     scaleBiggerButton.removeEventListener(`click`, window.editor.biggerButtonClickHandler);
     hashtagsInput.removeEventListener(`input`, window.validation.hashtagInputHandler);
+    uploadForm.removeEventListener(`submit`, uploadFormSubmitHandler);
+    resetForm();
+  };
+
+  const resetForm = () => {
+    uploadForm.reset();
   };
 
   fileUploadStart.addEventListener(`change`, (evt) => {
@@ -57,4 +63,13 @@
     evt.preventDefault();
     closeEditForm();
   });
+
+  const uploadFormSubmitHandler = (evt) => {
+    evt.preventDefault();
+    window.backend.send(new FormData(uploadForm), window.backend.successHandler, window.backend.errorHandler);
+  };
+
+  window.form = {
+    closeEditForm
+  };
 })();
