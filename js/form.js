@@ -67,9 +67,6 @@
   const uploadFormSubmitHandler = (evt) => {
     evt.preventDefault();
     window.backend.send(new FormData(uploadForm), window.backend.successHandler, window.backend.errorHandler);
-  };
-
-  window.form = {
-    closeEditForm
+    closeEditForm();
   };
 })();
