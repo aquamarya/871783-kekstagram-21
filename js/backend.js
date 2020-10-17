@@ -78,7 +78,6 @@
 
     const removeMessage = () => {
       mainBlock.removeChild(message);
-      closeButton.removeEventListener(`click`, successHandler);
       document.removeEventListener(`keydown`, successHandler);
       document.removeEventListener(`mouseup`, successHandler);
     };
