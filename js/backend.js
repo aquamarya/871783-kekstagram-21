@@ -1,8 +1,10 @@
 'use strict';
 
 (() => {
-  const URL_GET = `https://21.javascript.pages.academy/kekstagram/data`;
-  const URL_POST = `https://21.javascript.pages.academy/kekstagram`;
+  const Url = {
+    GET: `https://21.javascript.pages.academy/kekstagram/data`,
+    POST: `https://21.javascript.pages.academy/kekstagram`
+  };
   const StatusCode = {
     OK: 200,
     BAD_REQUEST: 400,
@@ -55,36 +57,44 @@
 
   const load = (onSuccess, onError) => {
     const xhr = new XMLHttpRequest();
-    xhr.open(`GET`, URL_GET);
+    xhr.open(`GET`, Url.GET);
     createResponse(xhr, onSuccess, onError);
     xhr.send();
   };
 
   const send = function (data, onSuccess, onError) {
     const xhr = new XMLHttpRequest();
-    xhr.open(`POST`, URL_POST);
+    xhr.open(`POST`, Url.POST);
     createResponse(xhr, onSuccess, onError);
     xhr.send(data);
   };
 
   const renderMessage = (message, type) => {
     mainBlock.appendChild(message);
+
     const closeButton = mainBlock.querySelector(`.${type}__button`);
     const popup = mainBlock.querySelector(`.${type}`);
     popup.style.zIndex = ZET_INDEX;
 
+    const removeMessage = () => {
+      mainBlock.removeChild(message);
+      closeButton.removeEventListener(`click`, successHandler);
+      document.removeEventListener(`keydown`, successHandler);
+      document.removeEventListener(`mouseup`, successHandler);
+    };
+
     closeButton.addEventListener(`click`, () => {
-      popup.remove();
+      removeMessage();
     });
     document.addEventListener(`keydown`, (evt) => {
       if (evt.key === window.util.ESC_KEY) {
-        popup.remove();
+        removeMessage();
       }
     });
     document.addEventListener(`mouseup`, (evt) => {
       const target = evt.target.closest(`.${type}__inner`);
       if (!target) {
-        popup.remove();
+        removeMessage();
       }
     });
   };
