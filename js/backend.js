@@ -78,24 +78,25 @@
 
     const removeMessage = () => {
       mainBlock.removeChild(message);
-      document.removeEventListener(`keydown`, successHandler);
-      document.removeEventListener(`mouseup`, successHandler);
+      document.removeEventListener(`keydown`, documentKeydownHandler);
+      document.removeEventListener(`mouseup`, documentMouseUpHandler);
     };
 
     closeButton.addEventListener(`click`, () => {
       removeMessage();
     });
-    document.addEventListener(`keydown`, (evt) => {
+
+    const documentKeydownHandler = (evt) => {
       if (evt.key === window.util.ESC_KEY) {
         removeMessage();
       }
-    });
-    document.addEventListener(`mouseup`, (evt) => {
+    };
+    const documentMouseUpHandler = (evt) => {
       const target = evt.target.closest(`.${type}__inner`);
       if (!target) {
         removeMessage();
       }
-    });
+    };
   };
 
   const loadErrorHandler = (errorMessage) => {
