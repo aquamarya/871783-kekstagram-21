@@ -26,7 +26,7 @@
     picturesItem.appendChild(fragment);
   };
 
-  window.backend.load(createPicturesList, window.backend.errorHandler);
+  window.backend.load(createPicturesList, window.backend.loadErrorHandler);
 
   const commentsContainer = document.querySelector(`.social__comments`);
   const commentsItem = document.querySelector(`.social__comment`);
