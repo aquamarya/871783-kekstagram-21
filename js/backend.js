@@ -97,6 +97,8 @@
         removeMessage();
       }
     };
+    document.addEventListener(`keydown`, documentKeydownHandler);
+    document.addEventListener(`keydown`, documentMouseUpHandler);
   };
 
   const loadErrorHandler = (errorMessage) => {
