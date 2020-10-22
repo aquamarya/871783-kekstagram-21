@@ -1,78 +1,81 @@
-// 'use strict';
-//
-// (() => {
-//   const RANDOM_PHOTOS_AMOUNT = 10;
-//   const imgFiltersElement = document.querySelector(`.img-filters`);
-//   const imgFiltersDefaultElement = imgFiltersElement.querySelector(`#filter-default`);
-//   const imgFiltersRandomElement = imgFiltersElement.querySelector(`#filter-random`);
-//   const imgFiltersDiscussedElement = imgFiltersElement.querySelector(`#filter-discussed`);
-//   const pictureItem = document.querySelector(`.picture`);
-//   const usersPhotos = [];
-//   const randomPhotos = [];
-//   const discussedPhotos = [];
-//
-//   imgFiltersElement.classList.remove(`img-filters--inactive`);
-//
-//   imgFiltersElement.addEventListener(`mousedown`, (evt) => {
-//     window.util.debounce((evt));
-//   });
-//
-//   const changeActiveFilters = (filterButton) => {
-//     const activeFiltersElement = imgFiltersElement.querySelector(`.img-filters__button--active`);
-//     activeFiltersElement.classList.remove(`img-filters__button--active`);
-//     filterButton.classList.add(`img-filters__button--active`);
-//   };
-//
-//   const removePhotos = () => {
-//     const currentPhotos = document.querySelectorAll(`.picture`);
-//     currentPhotos.forEach((photo) => {
-//       pictureItem.removeChild(photo);
-//     });
-//   };
-//
-//   const getDefaultPhotos = () => {
-//     createPicturesList(usersPhotos);
-//   };
-//
-//   const getRandomPhotos = () => {
-//
-//   };
-//
-//   const sortPhotosByComments = (commentsArray) => {
-//     commentsArray.sort((first, second) => {
-//       if (first > second) {
-//         return 1;
-//       }
-//       if (first < second) {
-//         return -1;
-//       }
-//       return
-//     });
-//     return commentsArray;
-//   };
-//
-//   const getDiscussedPhotos = () => {
-//
-//   };
-//
-//   const getSortedPhotos = window.util.debounce((evt) => {
-//     changeActiveFilters(evt.target);
-//     removePhotos();
-//     switch (evt.target) {
-//       case `filter-default`:
-//         getDefaultPhotos();
-//         break;
-//       case `filter-random`:
-//         getRandomPhotos();
-//         break;
-//       case `filter-discussed`:
-//         getDiscussedPhotos();
-//         break;
-//       default:
-//         getDefaultPhotos();
-//     }
-//
-//   });
-//
-//   imgFiltersElement.addEventListener(`click`, getSortedPhotos)
-// })();
+'use strict';
+
+(() => {
+  const RANDOM_PHOTOS_AMOUNT = 10;
+  const imgFiltersElement = document.querySelector(`.img-filters`);
+  const filtersDefault = imgFiltersElement.querySelector(`#filter-default`);
+  const filtersRandom = imgFiltersElement.querySelector(`#filter-random`);
+  const filtersDiscussed = imgFiltersElement.querySelector(`#filter-discussed`);
+  const usersPhotos = [];
+
+  imgFiltersElement.classList.remove(`img-filters--inactive`);
+
+  const changeActiveFilters = (filterButton) => {
+    const activeFiltersElement = imgFiltersElement.querySelector(`.img-filters__button--active`);
+    activeFiltersElement.classList.remove(`img-filters__button--active`);
+    filterButton.classList.add(`img-filters__button--active`);
+  };
+
+  const removePhotos = () => {
+    const currentPhotos = document.querySelectorAll(`.picture`);
+    currentPhotos.forEach((photo) => {
+      photo.remove();
+    });
+  };
+
+  const getDefaultPhotos = () => {
+    window.gallery.createPicturesList(usersPhotos);
+  };
+
+  const getRandomPhotos = () => {
+    const randomPhotos = usersPhotos.slice();
+    while (randomPhotos.length < RANDOM_PHOTOS_AMOUNT) {
+      const randomPhoto = window.util.getRandomArrayElement(usersPhotos);
+      if (randomPhotos.indexOf(randomPhoto) === -1) {
+        randomPhotos.push(randomPhoto);
+      }
+    }
+
+    window.gallery.createPicturesList(randomPhotos);
+  };
+
+  const sortPhotosByComments = (commentsArray) => {
+    return commentsArray.sort((a, b) => (a.comments.length > b.comments.length) ? 1 : -1);
+    // commentsArray.sort((first, second) => {
+    //   if (first.comments.length > second.comments.length) {
+    //     return 1;
+    //   }
+    //   if (first.comments.length < second.comments.length) {
+    //     return -1;
+    //   }
+    //   return 0;
+    // });
+    // return commentsArray;
+  };
+
+  const getDiscussedPhotos = () => {
+    const discussedPhotos = usersPhotos.slice();
+    sortPhotosByComments(discussedPhotos);
+    window.gallery.createPicturesList(discussedPhotos);
+  };
+
+  const getSortedPhotos = window.util.debounce((evt) => {
+    changeActiveFilters(evt.target);
+    removePhotos();
+    switch (evt.target) {
+      case filtersDefault :
+        getDefaultPhotos();
+        break;
+      case filtersRandom:
+        getRandomPhotos();
+        break;
+      case filtersDiscussed:
+        getDiscussedPhotos();
+        break;
+      default:
+        getDefaultPhotos();
+    }
+  });
+
+  imgFiltersElement.addEventListener(`click`, getSortedPhotos);
+})();
