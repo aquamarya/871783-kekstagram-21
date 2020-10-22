@@ -40,17 +40,17 @@
   };
 
   const sortPhotosByComments = (commentsArray) => {
-    return commentsArray.sort((a, b) => (a.comments.length > b.comments.length) ? 1 : -1);
-    // commentsArray.sort((first, second) => {
-    //   if (first.comments.length > second.comments.length) {
-    //     return 1;
-    //   }
-    //   if (first.comments.length < second.comments.length) {
-    //     return -1;
-    //   }
-    //   return 0;
-    // });
-    // return commentsArray;
+    // return commentsArray.sort((a, b) => (a.comments.length > b.comments.length) ? 1 : -1);
+    commentsArray.sort((first, second) => {
+      if (first.comments.length > second.comments.length) {
+        return 1;
+      }
+      if (first.comments.length < second.comments.length) {
+        return -1;
+      }
+      return 0;
+    });
+    return commentsArray;
   };
 
   const getDiscussedPhotos = () => {
@@ -59,7 +59,7 @@
     window.gallery.createPicturesList(discussedPhotos);
   };
 
-  const getSortedPhotos = window.util.debounce((evt) => {
+  const filterClickHandler = window.util.debounce((evt) => {
     changeActiveFilters(evt.target);
     removePhotos();
     switch (evt.target) {
@@ -77,5 +77,5 @@
     }
   });
 
-  imgFiltersElement.addEventListener(`click`, getSortedPhotos);
+  imgFiltersElement.addEventListener(`click`, filterClickHandler);
 })();
