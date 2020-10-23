@@ -6,7 +6,7 @@
   const filtersDefault = imgFiltersElement.querySelector(`#filter-default`);
   const filtersRandom = imgFiltersElement.querySelector(`#filter-random`);
   const filtersDiscussed = imgFiltersElement.querySelector(`#filter-discussed`);
-  const usersPhotos = [];
+  // const usersPhotos = [];
 
   imgFiltersElement.classList.remove(`img-filters--inactive`);
 
@@ -24,13 +24,13 @@
   };
 
   const getDefaultPhotos = () => {
-    window.gallery.createPicturesList(usersPhotos);
+    window.gallery.createPicturesList(window.gallery.usersPhotos);
   };
 
   const getRandomPhotos = () => {
-    const randomPhotos = usersPhotos.slice();
+    const randomPhotos = window.gallery.usersPhotos.slice();
     while (randomPhotos.length < RANDOM_PHOTOS_AMOUNT) {
-      const randomPhoto = window.util.getRandomArrayElement(usersPhotos);
+      const randomPhoto = window.util.getRandomArrayElement(window.gallery.usersPhotos);
       if (randomPhotos.indexOf(randomPhoto) === -1) {
         randomPhotos.push(randomPhoto);
       }
@@ -54,7 +54,7 @@
   };
 
   const getDiscussedPhotos = () => {
-    const discussedPhotos = usersPhotos.slice();
+    const discussedPhotos = window.gallery.usersPhotos.slice();
     sortPhotosByComments(discussedPhotos);
     window.gallery.createPicturesList(discussedPhotos);
   };
@@ -78,4 +78,8 @@
   });
 
   imgFiltersElement.addEventListener(`click`, filterClickHandler);
+
+  window.sorting = {
+    filterClickHandler
+  };
 })();
