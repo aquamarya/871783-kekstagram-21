@@ -29,10 +29,7 @@
   // window.backend.load(createPicturesList, window.backend.loadErrorHandler);
   window.backend.load((photos) => {
     createPicturesList(photos);
-    const usersPhotos = photos;
-    window.gallery = {
-      usersPhotos
-    };
+    window.gallery.usersPhotos = photos;
   }, window.backend.loadErrorHandler);
 
   const commentsContainer = document.querySelector(`.social__comments`);
@@ -62,5 +59,6 @@
   window.gallery = {
     createCommentsFragment,
     createPicturesList,
+    usersPhotos: []
   };
 })();

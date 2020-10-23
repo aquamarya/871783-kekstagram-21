@@ -1,7 +1,7 @@
 'use strict';
 
 (() => {
-  const RANDOM_PHOTOS_AMOUNT = 10;
+  // const RANDOM_PHOTOS_AMOUNT = 10;
   const imgFiltersElement = document.querySelector(`.img-filters`);
   const filtersDefault = imgFiltersElement.querySelector(`#filter-default`);
   const filtersRandom = imgFiltersElement.querySelector(`#filter-random`);
@@ -29,12 +29,12 @@
 
   const getRandomPhotos = () => {
     const randomPhotos = window.gallery.usersPhotos.slice();
-    while (randomPhotos.length < RANDOM_PHOTOS_AMOUNT) {
-      const randomPhoto = window.util.getRandomArrayElement(window.gallery.usersPhotos);
-      if (randomPhotos.indexOf(randomPhoto) === -1) {
-        randomPhotos.push(randomPhoto);
-      }
-    }
+    // while (randomPhotos.length < RANDOM_PHOTOS_AMOUNT) {
+    //   const randomPhoto = window.util.getRandomArrayElement(window.gallery.usersPhotos);
+    //   if (randomPhotos.indexOf(randomPhoto) === -1) {
+    //     randomPhotos.push(randomPhoto);
+    //   }
+    // }
 
     window.gallery.createPicturesList(randomPhotos);
   };
