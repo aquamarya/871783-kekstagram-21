@@ -1,12 +1,11 @@
 'use strict';
 
 (() => {
-  // const RANDOM_PHOTOS_AMOUNT = 10;
+  const RANDOM_PHOTOS_AMOUNT = 10;
   const imgFiltersElement = document.querySelector(`.img-filters`);
   const filtersDefault = imgFiltersElement.querySelector(`#filter-default`);
   const filtersRandom = imgFiltersElement.querySelector(`#filter-random`);
   const filtersDiscussed = imgFiltersElement.querySelector(`#filter-discussed`);
-  // const usersPhotos = [];
 
   imgFiltersElement.classList.remove(`img-filters--inactive`);
 
@@ -28,25 +27,17 @@
   };
 
   const getRandomPhotos = () => {
-    const randomPhotos = window.gallery.usersPhotos.slice();
-    // while (randomPhotos.length < RANDOM_PHOTOS_AMOUNT) {
-    //   const randomPhoto = window.util.getRandomArrayElement(window.gallery.usersPhotos);
-    //   if (randomPhotos.indexOf(randomPhoto) === -1) {
-    //     randomPhotos.push(randomPhoto);
-    //   }
-    // }
-
-    window.gallery.createPicturesList(randomPhotos);
+    const randomPhotos = window.util.shufflePhotos(window.gallery.usersPhotos.slice());
+    window.gallery.createPicturesList(randomPhotos.splice(0, RANDOM_PHOTOS_AMOUNT));
   };
 
   const sortPhotosByComments = (commentsArray) => {
-    // return commentsArray.sort((a, b) => (a.comments.length > b.comments.length) ? 1 : -1);
     commentsArray.sort((first, second) => {
       if (first.comments.length > second.comments.length) {
-        return 1;
+        return -1;
       }
       if (first.comments.length < second.comments.length) {
-        return -1;
+        return 1;
       }
       return 0;
     });
