@@ -10,16 +10,11 @@
   imgFiltersElement.classList.remove(`img-filters--inactive`);
 
   const changeActiveFilters = (filterButton) => {
-    const activeFiltersElement = imgFiltersElement.querySelector(`.img-filters__button--active`);
-    activeFiltersElement.classList.remove(`img-filters__button--active`);
+    imgFiltersElement
+      .querySelector(`.img-filters__button--active`)
+      .classList
+      .remove(`img-filters__button--active`);
     filterButton.classList.add(`img-filters__button--active`);
-  };
-
-  const removePhotos = () => {
-    const currentPhotos = document.querySelectorAll(`.picture`);
-    currentPhotos.forEach((photo) => {
-      photo.remove();
-    });
   };
 
   const getDefaultPhotos = () => {
@@ -29,30 +24,23 @@
   const getRandomPhotos = () => {
     const randomPhotos = window.util.shufflePhotos(window.gallery.usersPhotos.slice());
     window.gallery.createPicturesList(randomPhotos.splice(0, RANDOM_PHOTOS_AMOUNT));
-  };
-
-  const sortPhotosByComments = (commentsArray) => {
-    commentsArray.sort((first, second) => {
-      if (first.comments.length > second.comments.length) {
-        return -1;
-      }
-      if (first.comments.length < second.comments.length) {
-        return 1;
-      }
-      return 0;
-    });
-    return commentsArray;
+    // return window.util.shufflePhotos(window.gallery.usersPhotos.slice().splice(0, RANDOM_PHOTOS_AMOUNT));
   };
 
   const getDiscussedPhotos = () => {
-    const discussedPhotos = window.gallery.usersPhotos.slice();
-    sortPhotosByComments(discussedPhotos);
+    const discussedPhotos = window.gallery.usersPhotos
+      .slice()
+      .sort((first, second) => second.comments.length - first.comments.length);
     window.gallery.createPicturesList(discussedPhotos);
+    // return window.gallery.usersPhotos
+    //   .slice()
+    //   .sort((first, second) => second.comments.length - first.comments.length
+    //   );
   };
 
   const filterClickHandler = window.util.debounce((evt) => {
     changeActiveFilters(evt.target);
-    removePhotos();
+    window.gallery.removePhotos();
     switch (evt.target) {
       case filtersDefault :
         getDefaultPhotos();
@@ -68,9 +56,15 @@
     }
   });
 
+  // const renderPhotos = window.util.debounce((target) => {
+  //   filterClickHandler(target);
+  //   window.gallery.removePhotos();
+  //   window.gallery.createPicturesList(filterClickHandler);
+  // });
+
   imgFiltersElement.addEventListener(`click`, filterClickHandler);
 
   window.sorting = {
-    filterClickHandler
+    changeActiveFilters
   };
 })();

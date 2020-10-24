@@ -17,12 +17,12 @@
   // Тасование Фишера — Йетса:
   // проходить по массиву в обратном порядке
   // и менять местами каждый элемент со случайным элементом, который находится перед ним
-  const shufflePhotos = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
+  const shufflePhotos = (items) => {
+    for (let i = items.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+      [items[i], items[j]] = [items[j], items[i]];
     }
-    return array;
+    return items;
   };
 
   const debounce = (cb) => {

@@ -26,7 +26,6 @@
     picturesItem.appendChild(fragment);
   };
 
-  // window.backend.load(createPicturesList, window.backend.loadErrorHandler);
   window.backend.load((photos) => {
     createPicturesList(photos);
     window.gallery.usersPhotos = photos;
@@ -56,9 +55,16 @@
     commentsContainer.appendChild(fragment);
   };
 
+  const removePhotos = () => {
+    document.querySelectorAll(`.picture`).forEach((photo) => {
+      photo.remove();
+    });
+  };
+
   window.gallery = {
     createCommentsFragment,
     createPicturesList,
-    usersPhotos: []
+    usersPhotos: [],
+    removePhotos
   };
 })();
