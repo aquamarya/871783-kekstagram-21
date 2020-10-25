@@ -26,7 +26,10 @@
     picturesItem.appendChild(fragment);
   };
 
-  window.backend.load(createPicturesList, window.backend.loadErrorHandler);
+  window.backend.load((photos) => {
+    createPicturesList(photos);
+    window.gallery.usersPhotos = photos;
+  }, window.backend.loadErrorHandler);
 
   const commentsContainer = document.querySelector(`.social__comments`);
   const commentsItem = document.querySelector(`.social__comment`);
@@ -52,7 +55,16 @@
     commentsContainer.appendChild(fragment);
   };
 
+  const removePhotos = () => {
+    document.querySelectorAll(`.picture`).forEach((photo) => {
+      photo.remove();
+    });
+  };
+
   window.gallery = {
     createCommentsFragment,
+    createPicturesList,
+    usersPhotos: [],
+    removePhotos
   };
 })();
