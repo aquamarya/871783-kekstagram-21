@@ -1,8 +1,14 @@
 'use strict';
 
 (() => {
+  const CommentsAmount = {
+    MIN: 0,
+    MAX: 5
+  };
   const picturesItem = document.querySelector(`.pictures`);
   const picturesTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
+  const commentsContainer = document.querySelector(`.social__comments`);
+  const commentsItem = document.querySelector(`.social__comment`);
 
   // Копирует шаблон и добавляет в него данные
   const createPicture = (picture) => {
@@ -31,11 +37,9 @@
     window.gallery.usersPhotos = photos;
   }, window.backend.loadErrorHandler);
 
-  const commentsContainer = document.querySelector(`.social__comments`);
-  const commentsItem = document.querySelector(`.social__comment`);
-
   // Создает один комментарий
   const createCommentItem = (commentData) => {
+    commentsContainer.innerHTML = ``;
     const commentElement = commentsItem.cloneNode(true);
 
     commentElement.querySelector(`.social__picture`).src = commentData.avatar;
@@ -55,6 +59,12 @@
     commentsContainer.appendChild(fragment);
   };
 
+  const renderLimitComments = (commentsItems) => {
+    const currentComments = commentsItems.splice(CommentsAmount.MIN, CommentsAmount.MAX);
+    const newCommentsFragment = createCommentsFragment(currentComments);
+    commentsContainer.appendChild(newCommentsFragment);
+  };
+
   const removePhotos = () => {
     document.querySelectorAll(`.picture`).forEach((photo) => {
       photo.remove();
@@ -65,6 +75,7 @@
     createCommentsFragment,
     createPicturesList,
     usersPhotos: [],
+    renderLimitComments,
     removePhotos
   };
 })();

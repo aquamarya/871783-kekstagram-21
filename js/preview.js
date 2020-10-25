@@ -3,6 +3,8 @@
 (() => {
   const bigPictureItem = document.querySelector(`.big-picture`);
   const closeBigPictureButton = bigPictureItem.querySelector(`#picture-cancel`);
+  const commentsLoader = document.querySelector(`.comments-loader`);
+  const limitComments = [];
 
   // Отрисовывает большое фото
   const renderBigPictureItem = (pictureData) => {
@@ -14,7 +16,7 @@
     bigPictureItem.querySelector(`.social__comment-count `).classList.add(`hidden`);
     bigPictureItem.querySelector(`.comments-loader`).classList.add(`hidden`);
 
-    window.gallery.createCommentsFragment(pictureData.comments);
+    window.gallery.renderLimitComments(pictureData.comments);
   };
 
   // Переключает фотографии из массива объектов
@@ -26,12 +28,26 @@
     }
   };
 
+  const loadButtonClickHandler = () => {
+    window.gallery.renderLimitComments(limitComments);
+    if (limitComments.length === 0) {
+      commentsLoader.removeEventListener(`click`, loadButtonClickHandler);
+      commentsLoader.add(`hidden`);
+    }
+  };
+
   const showBigPicture = (picture) => {
     renderBigPictureItem(picture);
     document.querySelector(`body`).classList.add(`modal-open`);
     bigPictureItem.classList.remove(`hidden`);
     document.addEventListener(`keydown`, bigPictureEscKeydownHandler);
     closeBigPictureButton.addEventListener(`click`, closeButtonClickHandler);
+
+    if (picture.comments.length > window.gallery.CommentsAmount.MAX) {
+      commentsLoader.classList.remove(`hidden`);
+      commentsLoader.addEventListener(`click`, loadButtonClickHandler);
+    }
+    window.gallery.renderLimitComments(limitComments);
   };
 
   const closeBigPicture = () => {
