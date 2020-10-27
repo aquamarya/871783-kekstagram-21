@@ -58,6 +58,6 @@
   };
 
   window.preview = {
-    showBigPicture
+    showBigPicture,
   };
 })();

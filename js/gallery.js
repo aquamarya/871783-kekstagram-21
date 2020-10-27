@@ -9,6 +9,9 @@
   const picturesTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
   const commentsContainer = document.querySelector(`.social__comments`);
   const commentsItem = document.querySelector(`.social__comment`);
+  const openComments = document.querySelector(`.comments-open`);
+  const countComments = document.querySelector(`.comments-count`);
+  const commentsLoader = document.querySelector(`.comments-loader`);
 
   // Копирует шаблон и добавляет в него данные
   const createPicture = (picture) => {
@@ -59,10 +62,23 @@
     commentsContainer.appendChild(fragment);
   };
 
+  // const renderLimitComments = (commentsItems) => {
+  //   const currentComments = commentsItems.splice(CommentsAmount.MIN, CommentsAmount.MAX);
+  //   const newCommentsFragment = createCommentsFragment(currentComments);
+  //   commentsContainer.appendChild(newCommentsFragment);
+  // };
+
   const renderLimitComments = (commentsItems) => {
     const currentComments = commentsItems.splice(CommentsAmount.MIN, CommentsAmount.MAX);
-    const newCommentsFragment = createCommentsFragment(currentComments);
-    commentsContainer.appendChild(newCommentsFragment);
+    commentsContainer.appendChild(createCommentsFragment(currentComments, createCommentItem));
+    updateComments();
+  };
+
+  const updateComments = () => {
+    openComments.textContent = commentsContainer.childElementCount;
+    if (countComments.textContent === openComments.textContent) {
+      commentsLoader.classList.add(`hidden`);
+    }
   };
 
   const removePhotos = () => {
