@@ -4,7 +4,7 @@
   const bigPictureItem = document.querySelector(`.big-picture`);
   const closeBigPictureButton = bigPictureItem.querySelector(`#picture-cancel`);
   const commentsLoader = document.querySelector(`.comments-loader`);
-  const limitComments = [];
+  let limitComments = [];
 
   // Отрисовывает большое фото
   const renderBigPictureItem = (pictureData) => {
@@ -32,7 +32,7 @@
     window.gallery.renderLimitComments(limitComments);
     if (limitComments.length === 0) {
       commentsLoader.removeEventListener(`click`, loadButtonClickHandler);
-      commentsLoader.add(`hidden`);
+      commentsLoader.classList.add(`hidden`);
     }
   };
 
@@ -43,6 +43,7 @@
     document.addEventListener(`keydown`, bigPictureEscKeydownHandler);
     closeBigPictureButton.addEventListener(`click`, closeButtonClickHandler);
 
+    limitComments = picture.comments.slice();
     if (picture.comments.length > window.gallery.CommentsAmount.MAX) {
       commentsLoader.classList.remove(`hidden`);
       commentsLoader.addEventListener(`click`, loadButtonClickHandler);

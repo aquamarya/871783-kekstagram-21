@@ -9,8 +9,8 @@
   const picturesTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
   const commentsContainer = document.querySelector(`.social__comments`);
   const commentsItem = document.querySelector(`.social__comment`);
-  const openComments = document.querySelector(`.comments-open`);
-  const countComments = document.querySelector(`.comments-count`);
+  const socialCommentsCount = document.querySelector(`.social__comment-count`);
+  const commentsCount = document.querySelector(`.comments-count`);
   const commentsLoader = document.querySelector(`.comments-loader`);
 
   // Копирует шаблон и добавляет в него данные
@@ -54,29 +54,25 @@
 
   // Создает и заполняет DOM-элементы
   const createCommentsFragment = (commentData) => {
-    commentsContainer.innerHTML = ``;
     const fragment = document.createDocumentFragment();
+
     for (let i = 0; i < commentData.length; i++) {
       fragment.appendChild(createCommentItem(commentData[i]));
     }
-    commentsContainer.appendChild(fragment);
+
+    return fragment;
   };
 
-  // const renderLimitComments = (commentsItems) => {
-  //   const currentComments = commentsItems.splice(CommentsAmount.MIN, CommentsAmount.MAX);
-  //   const newCommentsFragment = createCommentsFragment(currentComments);
-  //   commentsContainer.appendChild(newCommentsFragment);
-  // };
-
   const renderLimitComments = (commentsItems) => {
+    commentsContainer.innerHTML = ``;
     const currentComments = commentsItems.splice(CommentsAmount.MIN, CommentsAmount.MAX);
-    commentsContainer.appendChild(createCommentsFragment(currentComments, createCommentItem));
+    commentsContainer.appendChild(createCommentsFragment(currentComments));
     updateComments();
   };
 
   const updateComments = () => {
-    openComments.textContent = commentsContainer.childElementCount;
-    if (countComments.textContent === openComments.textContent) {
+    socialCommentsCount.textContent = commentsContainer.childElementCount;
+    if (commentsCount.textContent === socialCommentsCount.textContent) {
       commentsLoader.classList.add(`hidden`);
     }
   };
@@ -92,6 +88,7 @@
     createPicturesList,
     usersPhotos: [],
     renderLimitComments,
-    removePhotos
+    removePhotos,
+    CommentsAmount
   };
 })();
