@@ -53,11 +53,11 @@
   };
 
   // Создает и заполняет DOM-элементы
-  const createCommentsFragment = (commentData) => {
+  const createCommentsFragment = (comments) => {
     const fragment = document.createDocumentFragment();
 
-    for (let i = 0; i < commentData.length; i++) {
-      fragment.appendChild(createCommentItem(commentData[i]));
+    for (let comment of comments) {
+      fragment.appendChild(createCommentItem(comment));
     }
 
     return fragment;
@@ -70,8 +70,7 @@
     updateComments();
   };
 
-  const updateComments = () => {
-    socialCommentsCount.textContent = commentsContainer.childElementCount;
+  const updateComments = (comment) => {
     if (commentsCount.textContent === socialCommentsCount.textContent) {
       commentsLoader.classList.add(`hidden`);
     }
