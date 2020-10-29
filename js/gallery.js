@@ -42,7 +42,6 @@
 
   // Создает один комментарий
   const createCommentItem = (commentData) => {
-    // commentsContainer.innerHTML = ``;
     const commentElement = commentsItem.cloneNode(true);
 
     commentElement.querySelector(`.social__picture`).src = commentData.avatar;
@@ -66,6 +65,7 @@
   const renderLimitComments = (commentsItems) => {
     const currentComments = commentsItems.splice(CommentsAmount.MIN, CommentsAmount.MAX);
     commentsContainer.appendChild(createCommentsFragment(currentComments));
+    socialCommentsCount.textContent = `${currentComments.length} из ${commentsCount.textContent} комментариев`;
     updateComments();
   };
 

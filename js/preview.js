@@ -5,8 +5,8 @@
   const closeBigPictureButton = bigPictureItem.querySelector(`#picture-cancel`);
   const commentsLoader = document.querySelector(`.comments-loader`);
   const commentsContainer = document.querySelector(`.social__comments`);
-  // const socialCommentsCount = document.querySelector(`.social__comment-count`);
-  // const commentsCount = document.querySelector(`.comments-count`);
+  const socialCommentsCount = document.querySelector(`.social__comment-count`);
+  const commentsCount = document.querySelector(`.comments-count`);
   let limitComments = [];
 
   // Отрисовывает большое фото
@@ -31,6 +31,7 @@
 
   const loadButtonClickHandler = () => {
     window.gallery.renderLimitComments(limitComments);
+    socialCommentsCount.textContent = `${commentsContainer.children.length} из ${commentsCount.textContent} комментариев`;
     if (limitComments.length === 0) {
       commentsLoader.removeEventListener(`click`, loadButtonClickHandler);
       commentsLoader.classList.add(`hidden`);

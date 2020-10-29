@@ -38,6 +38,7 @@
   const hashtagInputHandler = (evt) => {
     const hashtags = evt.target.value.toLowerCase().split(` `);
     evt.target.setCustomValidity(getValidityMessages(hashtags));
+    evt.target.style.border = `2px solid red`;
   };
   window.validation = {
     hashtagInputHandler
