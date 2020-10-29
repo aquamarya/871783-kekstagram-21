@@ -42,7 +42,7 @@
 
   // Создает один комментарий
   const createCommentItem = (commentData) => {
-    commentsContainer.innerHTML = ``;
+    // commentsContainer.innerHTML = ``;
     const commentElement = commentsItem.cloneNode(true);
 
     commentElement.querySelector(`.social__picture`).src = commentData.avatar;
@@ -64,13 +64,12 @@
   };
 
   const renderLimitComments = (commentsItems) => {
-    commentsContainer.innerHTML = ``;
     const currentComments = commentsItems.splice(CommentsAmount.MIN, CommentsAmount.MAX);
     commentsContainer.appendChild(createCommentsFragment(currentComments));
     updateComments();
   };
 
-  const updateComments = (comment) => {
+  const updateComments = () => {
     if (commentsCount.textContent === socialCommentsCount.textContent) {
       commentsLoader.classList.add(`hidden`);
     }

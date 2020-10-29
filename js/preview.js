@@ -4,6 +4,9 @@
   const bigPictureItem = document.querySelector(`.big-picture`);
   const closeBigPictureButton = bigPictureItem.querySelector(`#picture-cancel`);
   const commentsLoader = document.querySelector(`.comments-loader`);
+  const commentsContainer = document.querySelector(`.social__comments`);
+  // const socialCommentsCount = document.querySelector(`.social__comment-count`);
+  // const commentsCount = document.querySelector(`.comments-count`);
   let limitComments = [];
 
   // Отрисовывает большое фото
@@ -13,10 +16,8 @@
     bigPictureItem.querySelector(`.social__caption`).textContent = pictureData.description;
     bigPictureItem.querySelector(`.comments-count`).textContent = pictureData.comments.length;
 
-    bigPictureItem.querySelector(`.social__comment-count `).classList.add(`hidden`);
+    bigPictureItem.querySelector(`.social__comment-count `).classList.remove(`hidden`);
     bigPictureItem.querySelector(`.comments-loader`).classList.add(`hidden`);
-
-    window.gallery.renderLimitComments(pictureData.comments);
   };
 
   // Переключает фотографии из массива объектов
@@ -38,16 +39,19 @@
 
   const showBigPicture = (picture) => {
     renderBigPictureItem(picture);
+    commentsContainer.innerHTML = ``;
     document.querySelector(`body`).classList.add(`modal-open`);
     bigPictureItem.classList.remove(`hidden`);
     document.addEventListener(`keydown`, bigPictureEscKeydownHandler);
     closeBigPictureButton.addEventListener(`click`, closeButtonClickHandler);
 
     limitComments = picture.comments.slice();
+
     if (picture.comments.length > window.gallery.CommentsAmount.MAX) {
       commentsLoader.classList.remove(`hidden`);
       commentsLoader.addEventListener(`click`, loadButtonClickHandler);
     }
+
     window.gallery.renderLimitComments(limitComments);
   };
 
