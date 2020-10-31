@@ -41,9 +41,7 @@
     }
   };
 
-  const loadButtonClickHandler = () => {
-    updateComments();
-  };
+  const loadButtonClickHandler = () => updateComments();
 
   const showBigPicture = (picture) => {
     renderBigPictureItem(picture);
