@@ -7,7 +7,6 @@
   };
   const HASHTAG_MAX_AMOUNT = 5;
 
-  // Валидация хеш-тегов
   const hasSymbols = (symbol) => symbol.match(/^#[a-zA-Z0-9а-яА-Я]+$/);
 
   const checkDuplicateHashtags = (hashtags, hashtag) => {

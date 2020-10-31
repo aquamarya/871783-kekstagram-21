@@ -1,15 +1,16 @@
 'use strict';
 
 (() => {
+  const COMMENTS_PER_CLICK = 5;
   const bigPictureItem = document.querySelector(`.big-picture`);
   const closeBigPictureButton = bigPictureItem.querySelector(`#picture-cancel`);
   const commentsLoader = document.querySelector(`.comments-loader`);
   const commentsContainer = document.querySelector(`.social__comments`);
-  const socialCommentsCount = document.querySelector(`.social__comment-count`);
   const commentsCount = document.querySelector(`.comments-count`);
-  let limitComments = [];
+  const commentsCountCurrent = document.querySelector(`.current-comments-count`);
+  let shownCommentsCount = 0;
+  let currentComments = [];
 
-  // Отрисовывает большое фото
   const renderBigPictureItem = (pictureData) => {
     bigPictureItem.querySelector(`.big-picture__img img`).src = pictureData.url;
     bigPictureItem.querySelector(`.likes-count`).textContent = pictureData.likes;
@@ -29,14 +30,19 @@
     }
   };
 
-  const loadButtonClickHandler = () => {
-    window.gallery.renderLimitComments(limitComments);
-    socialCommentsCount.innerHTML = `${commentsContainer.children.length} из ``<span>${commentsCount.innerHTML}</span>`` комментариев`;
-    // socialCommentsCount.textContent = `${commentsContainer.children.length} из ${commentsCount.innerHTML} комментариев`;
-    if (limitComments.length === 0) {
+  const updateComments = () => {
+    shownCommentsCount += COMMENTS_PER_CLICK;
+    window.gallery.renderLimitedComments(currentComments.slice(shownCommentsCount - COMMENTS_PER_CLICK, shownCommentsCount));
+    commentsCountCurrent.innerText = Math.min(shownCommentsCount, currentComments.length);
+
+    if (shownCommentsCount >= currentComments.length) {
       commentsLoader.removeEventListener(`click`, loadButtonClickHandler);
       commentsLoader.classList.add(`hidden`);
     }
+  };
+
+  const loadButtonClickHandler = () => {
+    updateComments();
   };
 
   const showBigPicture = (picture) => {
@@ -47,13 +53,15 @@
     document.addEventListener(`keydown`, bigPictureEscKeydownHandler);
     closeBigPictureButton.addEventListener(`click`, closeButtonClickHandler);
 
-    limitComments = picture.comments.slice();
-
     if (picture.comments.length > window.gallery.CommentsAmount.MAX) {
       commentsLoader.classList.remove(`hidden`);
       commentsLoader.addEventListener(`click`, loadButtonClickHandler);
     }
-    window.gallery.renderLimitComments(limitComments);
+    currentComments = picture.comments.slice();
+    shownCommentsCount = 0;
+
+    commentsCount.innerText = currentComments.length;
+    updateComments();
   };
 
   const closeBigPicture = () => {

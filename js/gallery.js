@@ -9,9 +9,6 @@
   const picturesTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
   const commentsContainer = document.querySelector(`.social__comments`);
   const commentsItem = document.querySelector(`.social__comment`);
-  const socialCommentsCount = document.querySelector(`.social__comment-count`);
-  const commentsCount = document.querySelector(`.comments-count`);
-  const commentsLoader = document.querySelector(`.comments-loader`);
 
   // Копирует шаблон и добавляет в него данные
   const createPicture = (picture) => {
@@ -40,7 +37,6 @@
     window.gallery.usersPhotos = photos;
   }, window.backend.loadErrorHandler);
 
-  // Создает один комментарий
   const createCommentItem = (commentData) => {
     const commentElement = commentsItem.cloneNode(true);
 
@@ -62,18 +58,8 @@
     return fragment;
   };
 
-  const renderLimitComments = (commentsItems) => {
-    const currentComments = commentsItems.splice(CommentsAmount.MIN, CommentsAmount.MAX);
-    commentsContainer.appendChild(createCommentsFragment(currentComments));
-    socialCommentsCount.innerHTML = `${currentComments.length} из ``<span>${commentsCount.innerHTML}</span>`` комментариев`;
-    // socialCommentsCount.textContent = `${currentComments.length} из ${commentsCount.innerHTML} комментариев`;
-    updateComments();
-  };
-
-  const updateComments = () => {
-    if (commentsCount.textContent === socialCommentsCount.textContent) {
-      commentsLoader.classList.add(`hidden`);
-    }
+  const renderLimitedComments = (comments) => {
+    commentsContainer.appendChild(createCommentsFragment(comments));
   };
 
   const removePhotos = () => {
@@ -86,7 +72,7 @@
     createCommentsFragment,
     createPicturesList,
     usersPhotos: [],
-    renderLimitComments,
+    renderLimitedComments,
     removePhotos,
     CommentsAmount
   };
