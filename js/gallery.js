@@ -65,8 +65,8 @@
   const renderLimitComments = (commentsItems) => {
     const currentComments = commentsItems.splice(CommentsAmount.MIN, CommentsAmount.MAX);
     commentsContainer.appendChild(createCommentsFragment(currentComments));
-    // socialCommentsCount.textContent = `${currentComments.length} из ${commentsCount.textContent} комментариев`;
-    socialCommentsCount.textContent = `${currentComments.length} из ``<span>${commentsCount.textContent}</span>`` комментариев`;
+    socialCommentsCount.textContent = `${currentComments.length} из ``<span>${commentsCount.innerHTML}</span>`` комментариев`;
+    // socialCommentsCount.textContent = `${currentComments.length} из ${commentsCount.innerHTML} комментариев`;
     updateComments();
   };
 
