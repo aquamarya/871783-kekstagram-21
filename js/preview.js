@@ -31,7 +31,7 @@
 
   const loadButtonClickHandler = () => {
     window.gallery.renderLimitComments(limitComments);
-    socialCommentsCount.textContent = `${commentsContainer.children.length} из ``<span>${commentsCount.innerHTML}</span>`` комментариев`;
+    socialCommentsCount.innerHTML = `${commentsContainer.children.length} из ``<span>${commentsCount.innerHTML}</span>`` комментариев`;
     // socialCommentsCount.textContent = `${commentsContainer.children.length} из ${commentsCount.innerHTML} комментариев`;
     if (limitComments.length === 0) {
       commentsLoader.removeEventListener(`click`, loadButtonClickHandler);
