@@ -1,8 +1,14 @@
 'use strict';
 
 (() => {
+  const CommentsAmount = {
+    MIN: 0,
+    MAX: 5
+  };
   const picturesItem = document.querySelector(`.pictures`);
   const picturesTemplate = document.querySelector(`#picture`).content.querySelector(`.picture`);
+  const commentsContainer = document.querySelector(`.social__comments`);
+  const commentsItem = document.querySelector(`.social__comment`);
 
   // Копирует шаблон и добавляет в него данные
   const createPicture = (picture) => {
@@ -31,10 +37,6 @@
     window.gallery.usersPhotos = photos;
   }, window.backend.loadErrorHandler);
 
-  const commentsContainer = document.querySelector(`.social__comments`);
-  const commentsItem = document.querySelector(`.social__comment`);
-
-  // Создает один комментарий
   const createCommentItem = (commentData) => {
     const commentElement = commentsItem.cloneNode(true);
 
@@ -46,13 +48,18 @@
   };
 
   // Создает и заполняет DOM-элементы
-  const createCommentsFragment = (commentData) => {
-    commentsContainer.innerHTML = ``;
+  const createCommentsFragment = (comments) => {
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < commentData.length; i++) {
-      fragment.appendChild(createCommentItem(commentData[i]));
+
+    for (let comment of comments) {
+      fragment.appendChild(createCommentItem(comment));
     }
-    commentsContainer.appendChild(fragment);
+
+    return fragment;
+  };
+
+  const renderLimitedComments = (comments) => {
+    commentsContainer.appendChild(createCommentsFragment(comments));
   };
 
   const removePhotos = () => {
@@ -65,6 +72,8 @@
     createCommentsFragment,
     createPicturesList,
     usersPhotos: [],
-    removePhotos
+    renderLimitedComments,
+    removePhotos,
+    CommentsAmount
   };
 })();

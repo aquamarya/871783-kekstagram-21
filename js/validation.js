@@ -7,7 +7,6 @@
   };
   const HASHTAG_MAX_AMOUNT = 5;
 
-  // Валидация хеш-тегов
   const hasSymbols = (symbol) => symbol.match(/^#[a-zA-Z0-9а-яА-Я]+$/);
 
   const checkDuplicateHashtags = (hashtags, hashtag) => {
@@ -38,6 +37,7 @@
   const hashtagInputHandler = (evt) => {
     const hashtags = evt.target.value.toLowerCase().split(` `);
     evt.target.setCustomValidity(getValidityMessages(hashtags));
+    evt.target.style.border = `2px solid red`;
   };
   window.validation = {
     hashtagInputHandler
