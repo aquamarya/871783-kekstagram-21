@@ -56,6 +56,7 @@ const resetForm = () => {
 fileUploadStart.addEventListener(`change`, (evt) => {
   evt.preventDefault();
   openEditForm();
+  window.uploadPhoto.fileUploadHandler();
 });
 
 closeButton.addEventListener(`click`, (evt) => {
