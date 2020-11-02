@@ -19,8 +19,8 @@ const fileUploadHandler = () => {
     reader.addEventListener(`load`, function () {
       viewPhotoItem.src = reader.result;
 
-      imagePreview.forEach((preview) => {
-        preview.style = `background-image: url("' reader.result '")`;
+      imagePreview.forEach((previewItem) => {
+        previewItem.style.backgroundImage = `url(" ${reader.result} ")`;
       });
     });
 
