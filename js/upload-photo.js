@@ -3,6 +3,7 @@
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 const fileUploadStart = document.querySelector(`#upload-file`);
 const viewPhotoItem = document.querySelector(`.img-upload__preview img`);
+const imagePreview = document.querySelectorAll(`.effects__preview`);
 
 const fileUploadHandler = () => {
   const file = fileUploadStart.files[0];
@@ -17,6 +18,10 @@ const fileUploadHandler = () => {
 
     reader.addEventListener(`load`, function () {
       viewPhotoItem.src = reader.result;
+
+      imagePreview.forEach((preview) => {
+        preview.style = `background-image: url("' reader.result '")`;
+      });
     });
 
     reader.readAsDataURL(file);
